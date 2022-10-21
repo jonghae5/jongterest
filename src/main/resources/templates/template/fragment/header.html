@@ -1,0 +1,38 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="jongterest_header" th:fragment="header">
+    <div>
+        <a th:href="@{/}" style="color:'black;'">
+            <h1 class="jongterest_logo" >Jongterest</h1>
+        </a>
+    </div>
+    <div class="jongterest_header_nav_bar">
+        <a href="{% url 'articleapp:list' %}" class="jongterest_header_nav">
+            <span>Articles</span>
+        </a>
+        <a href="{% url 'projectapp:list' %}" class="jongterest_header_nav">
+            <span>Projects</span>
+        </a>
+        <a href="{% url 'subscribeapp:list' %}" class="jongterest_header_nav">
+            <span>Subscription</span>
+        </a>
+<!--        {% if not user.is_authenticated %}-->
+        <a th:href="@{/login}" class="jongterest_header_nav" th:unless="${user}">
+            <span>login</span>
+        </a>
+        <a th:href="@{/user/create}" class="jongterest_header_nav" th:unless="${user}">
+            <span>SignUp</span>
+        </a>
+<!--        {% else %}-->
+        <a href="{% url 'accountapp:detail' pk=user.pk %}" class="jongterest_header_nav"  th:if="${user}">
+            <span>MyPage</span>
+        </a>
+        <a th:href="@{/logout}" class="jongterest_header_nav"  th:if="${user}">
+            <span>logout</span>
+        </a>
+<!--        {% endif %}-->
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+.jongterest_logo{
+    font-family: 'Lobster', cursive;
+}
+.jongterest_footer_button{
+    font-size: .9rem;
+}
+
+
+.jongterest_footer{
+    text-align:center;
+    margin-top: 2rem;
+}
+
+.jongterest_header{
+    text-align:center;
+    margin: 2rem 0;
+}
+
+.jongterest_header_nav{
+
+    margin: 0 0.5rem;
+}
+
+.jongterest_header_nav_bar{
+    margin: 1rem 0;
+}
+
+
+.jongterest_container {
+  max-width: 560px;
+  text-align : center;
+  margin:4rem auto;
+  font-family:'NanumSquareR';
+}
+.jongterest_field-error {
+  border-color: #dc3545;
+  color: #dc3545;
+}
+.jongterest_space {
+margin-bottom: 10px;
+}
+
+
+
+@media screen and (max-width:500px) {
+    html {
+        font-size: 13px;
+
+    }
+
+}
+
+a {
+    color: black;
+    text-decoration: none;
+
+}
+a:hover {
+    color: black;
+    text-decoration: none;
+}
+
