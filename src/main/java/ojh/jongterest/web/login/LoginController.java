@@ -48,15 +48,24 @@ public class LoginController {
 
         //로그인 성공 처리 TODO
         //세션이 있으면 기존 세션 반환, 없으면 생성
-        HttpSession session = request.getSession(true);
+        HttpSession session = request.getSession();
         //세션에 로그인 회원 정보 보관
         session.setAttribute(SessionConst.LOGIN_USER, loginUser);
         //쿠키에 시간 정보를 주지 않으면 세션 쿠키(브라우저 종료시 삭제)
-        sessionManager.createSession(loginUser, response);
-
 
         return "redirect:" + redirectURL;
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session!=null) {
+            session.removeAttribute(SessionConst.LOGIN_USER);
+            session.invalidate();
+        }
+        return "redirect:/";
+    }
+
 
     private void loginErrorCheck(BindingResult bindingResult, User loginUser) {
         if (loginUser == null) {
@@ -64,14 +73,4 @@ public class LoginController {
 
         }
     }
-
-    @RequestMapping("/logout")
-    public String logout(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        if (session!=null) {
-            session.invalidate();
-        }
-        return "redirect:/";
-    }
-
 }

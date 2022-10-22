@@ -17,17 +17,17 @@
             <span>Subscription</span>
         </a>
 <!--        {% if not user.is_authenticated %}-->
-        <a th:href="@{/login}" class="jongterest_header_nav" th:unless="${user}">
+        <a th:href="@{/login}" class="jongterest_header_nav" th:if="${session.loginUser ==null}">
             <span>login</span>
         </a>
-        <a th:href="@{/user/create}" class="jongterest_header_nav" th:unless="${user}">
+        <a th:href="@{/user/create}" class="jongterest_header_nav" th:if="${session.loginUser ==null}">
             <span>SignUp</span>
         </a>
 <!--        {% else %}-->
-        <a href="{% url 'accountapp:detail' pk=user.pk %}" class="jongterest_header_nav"  th:if="${user}">
+        <a th:href="@{/user/detail/{id}(id = ${session.loginUser.userId})}" class="jongterest_header_nav" th:if="${session.loginUser !=null}">
             <span>MyPage</span>
         </a>
-        <a th:href="@{/logout}" class="jongterest_header_nav"  th:if="${user}">
+        <a th:href="@{/logout}" class="jongterest_header_nav" th:if="${session.loginUser !=null}">
             <span>logout</span>
         </a>
 <!--        {% endif %}-->

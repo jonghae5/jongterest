@@ -28,7 +28,7 @@
 
 .jongterest_container {
   max-width: 560px;
-  text-align : center;
+  text-align : left!important;
   margin:4rem auto;
   font-family:'NanumSquareR';
 }
