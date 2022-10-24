@@ -2,13 +2,15 @@ package ojh.jongterest.web.user;
 
 import lombok.Data;
 
-import ojh.jongterest.web.validator.EnumNamePattern;
-
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Data
-public class UserCreateForm {
+public class UserUpdateForm {
 
+//    @NotNull
+    private Long userId;
 //    @NotBlank
 //    private String nickName;
     @NotBlank
@@ -24,10 +26,9 @@ public class UserCreateForm {
 //    @EnumNamePattern(regexp = "MALE|FEMALE")
     private Gender genderType;
 
-    public UserCreateForm(String loginId, String password, Gender genderType) {
+    public UserUpdateForm(Long userId, String loginId,  Gender genderType) {
+        this.userId = userId;
         this.loginId = loginId;
-        this.password = password;
-
         this.genderType = genderType;
     }
 }

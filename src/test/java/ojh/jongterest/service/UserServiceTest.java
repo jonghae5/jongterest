@@ -22,16 +22,16 @@ class UserServiceTest {
     @Test
     void signUp() {
         User user1 = new User("hello", "id", "password", Gender.MALE);
-        UserCreateForm userCreateForm = new UserCreateForm("nickname","id","password","password",Gender.FEMALE);
+        UserCreateForm userCreateForm = new UserCreateForm("id","password",Gender.FEMALE);
         userService.signUp(userCreateForm);
-        User findUser = userService.findUser(user1.getLoginId()).get();
+        User findUser = userService.findUserByLoginId(user1.getLoginId()).get();
         Assertions.assertThat(findUser.getLoginId()).isEqualTo(user1.getLoginId());
     }
 
     @Test
     void login() {
         User user1 = new User("hello", "id", "password", Gender.MALE);
-        UserCreateForm userCreateForm = new UserCreateForm("nickname","id","password","password",Gender.FEMALE);
+        UserCreateForm userCreateForm = new UserCreateForm("id","password",Gender.FEMALE);
         userService.signUp(userCreateForm);
 
         LoginForm loginForm = new LoginForm("id", "password");

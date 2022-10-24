@@ -7,10 +7,62 @@
     <div class="mb-4">
         <h4>Change Info</h4>
     </div>
-    <form action method ="post">
+    <form action="login.html" th:object="${user}" th:action method="post">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p class="jongterest_field-error" th:each="err : ${#fields.globalErrors()}"
+               th:text="${err}">전체 오류 메시지</p></div>
+        <div>
+<!--            <div class="jongterest_space">-->
+<!--                <label for="nickName">닉네임</label>-->
+<!--                <input type="text" id="nickName" th:field="*{nickName}" class="form-control"-->
+<!--                       th:errorclass="jongterest_field-error">-->
+<!--                <div class="jongterest_field-error" th:errors="*{nickName}">닉네임 오류</div>-->
+<!--            </div>-->
 
+            <div class="jongterest_space">
+                <label for="loginId">아이디</label>
+                <input type="text" id="loginId" th:field="*{loginId}" class="form-control"
+                       th:errorclass="jongterest_field-error" readonly>
+                <div class="jongterest_field-error" th:errors="*{loginId}">아이디 오류</div>
+            </div>
+            <div class="jongterest_space">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" th:field="*{password}" class="form-control"
+                       th:errorclass="jongterest_field-error">
+                <div class="jongterest_field-error" th:errors="*{password}">비밀번호 오류</div>
+            </div>
 
-        <input type="submit" class="btn btn-dark rounded-pill col-6 mt-3">
+            <div class="jongterest_space">
+                <label for="check_password">비밀번호 확인</label>
+                <input type="password" id="check_password" th:field="*{checkPassword}"
+                       class="form-control" th:errorclass="jongterest_field-error">
+                <div class="jongterest_field-error" th:errors="*{checkPassword}"/>
+            </div>
+
+            <div th:each="type : *{genderTypes}" class="form-check form-check-inline jongterest_space">
+                <input type="radio" th:field="*{genderType}" th:value="${type.name()}" class="form-check-input">
+                <label th:for="${#ids.prev('genderType')}" th:text="${type.genderType}" class="form-check-label">
+                    Gender
+                </label>
+            </div>
+            <div class="jongterest_field-error" th:errors="*{genderType}"/>
+
+            <hr class="my-4">
+            <div class="row">
+                <div class="col">
+                    <button class="w-100 btn btn-primary btn-lg" type="submit">
+                        수정
+                    </button>
+                </div>
+                <div class="col">
+                    <button class="w-100 btn btn-secondary btn-lg"
+                            onclick="location.href='login.html'"
+                            th:onclick="|location.href='@{/user/detail/{id}(id=${user.userId})}'|" type="button">
+                        취소
+                    </button>
+                </div>
+            </div>
+        </div>
     </form>
 </div>
 </section>

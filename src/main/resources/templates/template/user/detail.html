@@ -4,54 +4,45 @@
 <section>
     <div>
         <div style="text-align: center; max-width: 500px;margin: 4rem auto;">
-            <p>
-                <!--            {{ target_user.date_joined }}-->
+            <p th:text="${user?.joinedDate}">
             </p>
 
-
-            <!--        {% if target_user.profile %}-->
-            <img src="{{ target_user.profile.image.url }}" alt=""
+            <img th:src="@{/images/{filePath}(filePath=${user?.profile?.profileImage?.storeFilePath})}"
+                 alt
                  style="height: 12rem; width: 12rem; border-radius : 20rem; margin-bottom: 2rem; object-fit:cover;">
-
             <h2 style="font-family: 'NanumSquareB';">
-                <!--            {{ target_user.profile.nickname }}-->
-                <!--            {% if target_user == user %}-->
                 <a class="material-icons"
                    style="box-shadow: 0 0 4px #ccc; border-radius: 10rem; padding: .4rem;"
-                   href="{% url 'profileapp:update' pk=target_user.profile.pk %}">
-                    edit
+                   th:href="@{/user/profile/update/{id}(id = ${session.loginUser?.userId})}"
+                   th:if="${session.loginUser.userId ==user.userId} and ${session.loginUser.profile!=null}">
+                        edit
                 </a>
-                <!--            {% endif %}-->
             </h2>
-            <h5 style="margin-bottom: 3rem;">
-                <!--            {{ target_user.profile.message }}-->
+
+            <h5 style="margin-bottom: 1rem;" th:text="${session.loginUser?.profile?.message}">
+                Default Message
             </h5>
 
-            <!--        {% else %}-->
-            <!--        {% if target_user == user %}-->
-
-            <a href="{% url 'profileapp:create' %}">
+            <a th:href="@{/user/profile/create/{id}(id = ${session.loginUser?.userId})}"
+               th:if="${session.loginUser.userId ==user.userId} and ${session.loginUser.profile==null}">
                 <h2 style="font-family: 'NanumSquareB';">
                     Create Profile
                 </h2>
             </a>
-            <!--        {% else %}-->
-            <h2>
-                닉네임 미설정
-            </h2>
-            <!--        {% endif %}-->
-            <!--        {% endif %}-->
 
+            <h2 th:text="${user?.profile?.nickname}?:'닉네임 미설정'"></h2>
 
-            <!--        {% if target_user == user %}-->
             <a class="material-icons"
                style="box-shadow: 0 0 4px #ccc; border-radius: 10rem; padding: .4rem;"
-               href="{% url 'accountapp:update' pk=user.pk %}">
+               th:href="@{/user/update/{id}(id = ${session.loginUser?.userId})}"
+               th:if="${session.loginUser.userId ==user.userId}">
+
                 settings
             </a>
             <a class="material-icons"
                style="box-shadow: 0 0 4px #fcc; border-radius: 10rem; padding: .4rem;"
-               href="{% url 'accountapp:delete' pk=user.pk %}">
+               th:href="@{/user/delete/{id}(id = ${session.loginUser?.userId})}"
+               th:if="${session.loginUser.userId ==user.userId}">
                 cancel
             </a>
             <!--        {% endif %}-->

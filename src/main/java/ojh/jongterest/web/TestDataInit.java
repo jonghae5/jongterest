@@ -7,6 +7,7 @@ import ojh.jongterest.web.user.Gender;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
@@ -20,8 +21,12 @@ public class TestDataInit {
      */
     @PostConstruct
     public void init() {
-        User user = new User("John","123","123", Gender.MALE);
+        User user = new User("123","123", Gender.MALE);
+        user.setJoinedDate(LocalDateTime.now());
+        User user2 = new User("dhwhdgo2368","123", Gender.FEMALE);
+        user2.setJoinedDate(LocalDateTime.now());
         userRepository.save(user);
+        userRepository.save(user2);
 
     }
 

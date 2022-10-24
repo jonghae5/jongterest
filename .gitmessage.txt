@@ -17,4 +17,5 @@
 # Prevent : 방지
 # Move : 이동
 # Rename : 이름변경
+# git config --global commit.template <.gitmessage.txt 경로>
 ##################
