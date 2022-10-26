@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout(content, styles, scripts)">
+
+<div th:replace="~{template/fragment/head :: head}"></div>
+
+<th:block th:replace="${styles}"></th:block>
+<th:block th:replace="${scripts}"></th:block>
+
+<body style="font-family: 'NanumSquareR';">
+
+<div th:replace="~{template/fragment/header :: header}"></div>
+
+<hr>
+
+<div th:replace="${content}"></div>
+
+<hr>
+
+<div th:replace="~{template/fragment/footer :: footer}"></div>
+
+
+</body>
+</html>

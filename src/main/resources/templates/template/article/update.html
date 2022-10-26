@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{template/base:: layout(~{::section})}">
+
+<body>
+<section class="jongterest_container">
+    <form action="update.html" th:object="${article}" th:action method="post" enctype="multipart/form-data">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p class="jongterest_field-error" th:each="err : ${#fields.globalErrors()}"
+               th:text="${err}">전체 오류 메시지</p></div>
+        <div>
+            <div class="mb-4">
+                <h4>Article Update</h4>
+            </div>
+            <div class="jongterest_space">
+                <label for="loginId">제목</label>
+                <input type="text" id="loginId" th:field="*{title}" class="form-control"
+                       th:errorclass="jongterest_field-error">
+                <div class="jongterest_field-error" th:errors="*{title}">제목 오류</div>
+            </div>
+            <li>파일 <input type="file" name="articleImage" ></li>
+            <div class="jongterest_space">
+                <label for="content">내용</label>
+                <textarea id="content" th:field="*{content}" cols=67 rows=15 name="content"
+                          th:errorclass="jongterest_field-error"/>
+                <div class="jongterest_field-error" th:errors="*{content}">내용 오류</div>
+            </div>
+        </div>
+
+        <hr class="my-4">
+        <div class="row">
+            <div class="col">
+                <button class="w-100 btn btn-primary btn-lg" type="submit">
+                    수정
+                </button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg"
+                        onclick="location.href='update.html'"
+                        th:onclick="|location.href='@{/}'|" type="button">
+                    취소
+                </button>
+            </div>
+        </div>
+
+    </form>
+</section>
+</body>
+</html>
+
+
+

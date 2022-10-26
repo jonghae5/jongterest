@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{template/base:: layout(~{::section})}">
+
+<body>
+<section>
+    <div>
+        <div style ="text-align: center; max-width: 700px;margin: 4rem auto;">
+            <h1 th:text="${article?.title}">
+                default title
+            </h1>
+            <h5 th:text="${article?.user.profile.nickname}">
+                {{ target_article.user.profile.nickname }}
+            </h5>
+            <hr>
+            <img style="width: 80%; border-radius: 1rem; margin: 2rem"
+                 th:src="@{/images/{filePath}(filePath=${article?.articleImage.storeFilePath})}" alt="">
+            <div class="text-start"  th:utext="${article?.content}">
+                default content
+            </div>
+
+            <a th:href="@{/article/update/{articleId}(articleId=${article?.articleId})}"
+               class=" btn btn-primary rounded-pill col-3"
+               th:if="${session.loginUser.userId ==article?.user.userId}">
+                Update
+            </a>
+            <a th:href="@{/article/delete/{articleId}(articleId=${article?.articleId})}"
+               class="btn btn-danger rounded-pill col-3"
+               th:if="${session.loginUser.userId ==article?.user.userId}">
+                Delete
+            </a>
+            <hr>
+<!--            {% for comment in target_article.comment.all %}-->
+<!--            {% include 'commentapp/detail.html' with comment=comment %}-->
+<!--            {% endfor %}-->
+
+<!--            {% include 'commentapp/create.html' with article=target_article %}-->
+        </div>
+    </div>
+
+</section>
+</body>
+</html>
+
+
+

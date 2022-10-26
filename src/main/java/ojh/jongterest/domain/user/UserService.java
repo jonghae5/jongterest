@@ -1,17 +1,14 @@
 package ojh.jongterest.domain.user;
 
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ojh.jongterest.domain.user.profile.ProfileImage;
+import ojh.jongterest.domain.imageFile.ImageFile;
 import ojh.jongterest.domain.user.profile.UserProfile;
-import ojh.jongterest.web.user.Gender;
-import ojh.jongterest.web.user.UserCreateForm;
-import ojh.jongterest.web.user.UserUpdateForm;
+import ojh.jongterest.web.controller.user.Gender;
+import ojh.jongterest.web.controller.user.UserCreateForm;
+import ojh.jongterest.web.controller.user.UserUpdateForm;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,7 +69,7 @@ public class UserService {
 
     }
 
-    public User createUserProfile(User user, String nickname, String message, ProfileImage profileImage) {
+    public User createUserProfile(User user, String nickname, String message, ImageFile profileImage) {
         user.createProfile(new UserProfile(profileImage, nickname, message));
         return user;
     }

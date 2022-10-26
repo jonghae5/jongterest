@@ -7,7 +7,7 @@
         </a>
     </div>
     <div class="jongterest_header_nav_bar">
-        <a href="{% url 'articleapp:list' %}" class="jongterest_header_nav">
+        <a th:href="@{/article/list}" class="jongterest_header_nav">
             <span>Articles</span>
         </a>
         <a href="{% url 'projectapp:list' %}" class="jongterest_header_nav">

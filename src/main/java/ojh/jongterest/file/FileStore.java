@@ -1,6 +1,7 @@
 package ojh.jongterest.file;
 
-import ojh.jongterest.domain.user.profile.ProfileImage;
+
+import ojh.jongterest.domain.imageFile.ImageFile;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +20,7 @@ public class FileStore {
         return fileDir + filename;
     }
 
-    public ProfileImage storeFile(MultipartFile multipartFile) throws IOException
+    public ImageFile storeFile(MultipartFile multipartFile) throws IOException
     {
         if (multipartFile.isEmpty()) {
             return null;
@@ -27,7 +28,7 @@ public class FileStore {
         String originalFilename = multipartFile.getOriginalFilename();
         String storeFileName = createStoreFileName(originalFilename);
         multipartFile.transferTo(new File(getFullPath(storeFileName)));
-        return new ProfileImage(originalFilename, storeFileName);
+        return new ImageFile(originalFilename, storeFileName);
     }
 
     private String createStoreFileName(String originalFilename) {

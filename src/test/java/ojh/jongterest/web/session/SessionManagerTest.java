@@ -1,8 +1,7 @@
 package ojh.jongterest.web.session;
 
 import ojh.jongterest.domain.user.User;
-import ojh.jongterest.web.user.Gender;
-import org.assertj.core.api.Assertions;
+import ojh.jongterest.web.controller.user.Gender;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;

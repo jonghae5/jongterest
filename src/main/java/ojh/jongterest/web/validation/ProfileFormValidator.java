@@ -5,13 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import ojh.jongterest.domain.user.User;
 import ojh.jongterest.domain.user.UserService;
 import ojh.jongterest.domain.user.profile.ProfileForm;
-import ojh.jongterest.web.user.UserCreateForm;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Component

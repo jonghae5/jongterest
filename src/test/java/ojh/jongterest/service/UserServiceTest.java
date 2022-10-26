@@ -1,11 +1,11 @@
 package ojh.jongterest.service;
 
 import ojh.jongterest.domain.user.UserService;
-import ojh.jongterest.web.user.Gender;
+import ojh.jongterest.web.controller.user.Gender;
 import ojh.jongterest.domain.user.UserRepository;
 import ojh.jongterest.web.login.LoginForm;
 import ojh.jongterest.domain.user.User;
-import ojh.jongterest.web.user.UserCreateForm;
+import ojh.jongterest.web.controller.user.UserCreateForm;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

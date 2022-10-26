@@ -3,7 +3,7 @@ package ojh.jongterest.domain.user;
 import lombok.Getter;
 import lombok.Setter;
 import ojh.jongterest.domain.user.profile.UserProfile;
-import ojh.jongterest.web.user.Gender;
+import ojh.jongterest.web.controller.user.Gender;
 
 import java.time.LocalDateTime;
 

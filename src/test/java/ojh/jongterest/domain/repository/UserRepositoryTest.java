@@ -1,6 +1,7 @@
 package ojh.jongterest.domain.repository;
 
-import ojh.jongterest.web.user.Gender;
+import ojh.jongterest.domain.user.UserLocalRepository;
+import ojh.jongterest.web.controller.user.Gender;
 import ojh.jongterest.domain.user.User;
 import ojh.jongterest.domain.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -12,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class UserRepositoryTest {
 
-    private static UserRepository userRepository = new UserRepository();
+    private static UserRepository userRepository = new UserLocalRepository();
 
     @AfterEach
     void afterEach() {
@@ -22,7 +23,7 @@ class UserRepositoryTest {
 
     @Test
     void findById() {
-        User user1 = new User("hello", "id", "password", Gender.MALE);
+        User user1 = new User("id", "password", Gender.MALE);
         userRepository.save(user1);
 
         User findUser = userRepository.findById(1L);
@@ -30,8 +31,8 @@ class UserRepositoryTest {
     }
     @Test
     void findAll() {
-        User user1 = new User("hello", "id", "password", Gender.MALE);
-        User user2 = new User("hello2", "id", "password", Gender.FEMALE);
+        User user1 = new User("id", "password", Gender.MALE);
+        User user2 = new User("id", "password", Gender.FEMALE);
 
         userRepository.save(user1);
         userRepository.save(user2);
@@ -43,7 +44,7 @@ class UserRepositoryTest {
 
     @Test
     void findByLoginId() {
-        User user1 = new User("hello", "id", "password", Gender.MALE);
+        User user1 = new User("id", "password",  Gender.MALE);
 
         userRepository.save(user1);
 

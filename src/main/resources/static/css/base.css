@@ -40,7 +40,41 @@
 margin-bottom: 10px;
 }
 
+.jongterest_article_container {
+ padding: 0;
+ margin: 0, auto;
+}
+.jongterest_article_container a {
+  width: 45%;
+  max-width:250px
 
+}
+.jongterest_article_container div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+
+}
+
+.jongterest_article_container img {
+  width: 100%;
+  border-radius: 1rem;
+}
+
+.jongterest_item1 {
+  height:300px;
+}
+
+.jongterest_item2 {
+  height:500px;
+}
+
+
+.jongterest_article_container img {
+  width: 100%;
+  border-radius: 1rem;
+}
 
 @media screen and (max-width:500px) {
     html {
