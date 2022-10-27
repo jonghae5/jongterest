@@ -56,7 +56,14 @@
     </div>
 
     <div style="text-align : center;">
-        <a th:href="@{/article/create}" class="btn btn-dark rounded-pill mt-3 mb-3 px-3">
+        <a th:href="@{|/user/profile/create/${session.loginUser.userId}?redirectURL=${#httpServletRequest.requestURI}|}"
+           class="btn btn-dark rounded-pill mt-3 mb-3 px-3"
+           th:if="${session.loginUser !=null and session.loginUser.profile == null}"
+        >
+            Profile 생성
+        </a>
+        <a th:href="@{/article/create}" class="btn btn-dark rounded-pill mt-3 mb-3 px-3"
+           th:if="${session.loginUser !=null and session.loginUser.profile != null}">
             Create Article
         </a>
     </div>

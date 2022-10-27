@@ -28,11 +28,9 @@ public class ArticleLocalRepository implements ArticleRepository{
     public Article save(Long userId,Article article) {
 
         article.setArticleId(sequence.addAndGet(1));
-        User findUser = userRepository.findById(userId);
-        article.setUser(findUser);
 
         articleRepository.put(sequence.get(),article);
-        userArticleRepository.add(findUser.getUserId(), article.getArticleId());
+        userArticleRepository.add(userId, article.getArticleId());
         return article;
     }
 
@@ -77,15 +75,12 @@ public class ArticleLocalRepository implements ArticleRepository{
     }
 
     @Override
-    public void delete(Long articleId) {
+    public void delete(Long userId, Long articleId) {
         Article findArticle = findById(articleId);
 
-        List<Long> findArticleIds = userArticleRepository.get(findArticle.getUser().getUserId());
+        List<Long> findArticleIds = userArticleRepository.get(userId);
         findArticleIds.remove(articleId);
-        userArticleRepository.remove(findArticle.getUser().getUserId());
-
-        userArticleRepository.put(findArticle.getUser().getUserId(), findArticleIds);
-
+        userArticleRepository.replace(userId, findArticleIds);
         articleRepository.remove(articleId);
     }
     @Override

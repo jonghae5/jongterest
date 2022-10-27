@@ -10,6 +10,7 @@ import ojh.jongterest.domain.user.User;
 import ojh.jongterest.domain.user.UserService;
 import ojh.jongterest.file.FileStore;
 import ojh.jongterest.web.argumentResolver.Login;
+import ojh.jongterest.web.controller.comment.CommentForm;
 import ojh.jongterest.web.validation.ArticleFormValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,7 +58,7 @@ public class ArticleController {
         ImageFile articleImage =  fileStore.storeFile(articleForm.getArticleImage());
         Article newArticle = new Article(loginUser, articleForm.getTitle(), articleForm.getContent(), articleImage);
 
-        articleRepository.save(loginUser.getUserId(), newArticle);
+        articleService.save(loginUser.getUserId(), newArticle);
 
         return  "redirect:/article/detail/" + String.valueOf(newArticle.getArticleId());
     }
@@ -68,8 +69,8 @@ public class ArticleController {
     @GetMapping("/detail/{articleId}")
     public String getDetailArticle(@Login User loginUser, @PathVariable("articleId") Long articleId, Model model) {
         Article article = articleRepository.findById(articleId);
-        log.info("article ID={}",article.getArticleId());
         model.addAttribute("article", article);
+        model.addAttribute("commentForm", new CommentForm());
         return "template/article/detail";
     }
 
@@ -135,7 +136,7 @@ public class ArticleController {
             redirectUrl(request);
         }
 
-        articleRepository.delete(articleId);
+        articleRepository.delete(loginUser.getUserId(),articleId);
 
         return "redirect:/article/list";
     }

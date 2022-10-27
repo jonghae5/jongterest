@@ -35,7 +35,7 @@ public class ProfileController {
     }
 
     @PostMapping("/create/{usedId}")
-    public String createProfile(@Login User loginUser, @ModelAttribute("profile") ProfileForm profileForm, BindingResult bindingResult, HttpSession session) throws IOException {
+    public String createProfile(@RequestParam(defaultValue = "/", required = false) String redirectURL, @Login User loginUser, @ModelAttribute("profile") ProfileForm profileForm, BindingResult bindingResult, HttpSession session) throws IOException {
         profileFormValidator.validate(profileForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
@@ -47,6 +47,9 @@ public class ProfileController {
         User createUser = userService.createUserProfile(loginUser, profileForm.getNickname(), profileForm.getMessage(), profileImage);
 //        session.setAttribute(SessionConst.LOGIN_USER, createUser);
 
+        if (!redirectURL.equals("/")) {
+            return "redirect:" + redirectURL;
+        }
         return "redirect:/user/detail/" + String.valueOf(loginUser.getUserId());
     }
 
