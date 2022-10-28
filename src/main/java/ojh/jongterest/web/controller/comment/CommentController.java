@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ojh.jongterest.domain.article.Article;
 import ojh.jongterest.domain.article.ArticleRepository;
-import ojh.jongterest.domain.article.ArticleService;
-import ojh.jongterest.domain.comment.Comment;
 import ojh.jongterest.domain.comment.CommentService;
 import ojh.jongterest.domain.user.User;
 import ojh.jongterest.web.argumentResolver.Login;
@@ -15,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping("/comment")
+@RequestMapping("/comments")
 @RequiredArgsConstructor
 @Slf4j
 public class CommentController {
@@ -28,7 +26,7 @@ public class CommentController {
         log.info("CREATE COMMENT 실행 <Controller>");
         commentService.saveComment(loginUser.getUserId(), articleId, commentForm.getContent());
 
-        return "redirect:/article/detail/" + String.valueOf(articleId);
+        return "redirect:/articles/detail/" + String.valueOf(articleId);
     }
 
     @PostMapping("/delete/{articleId}/{commentId}")
@@ -36,7 +34,7 @@ public class CommentController {
                               @PathVariable("articleId") Long articleId,@PathVariable("commentId") Long commentId) {
         commentService.deleteComment(articleId, commentId);
 
-        return "redirect:/article/detail/" + String.valueOf(articleId);
+        return "redirect:/articles/detail/" + String.valueOf(articleId);
     }
 
     @PostMapping("/update/{articleId}/{commentId}")
@@ -50,9 +48,9 @@ public class CommentController {
             redirectUrl(request);
         }
 
-        commentService.updateComment(articleId, commentId, form.getContent());
+        commentService.updateComment(commentId, form.getContent());
 
-        return "redirect:/article/detail/" + String.valueOf(articleId);
+        return "redirect:/articles/detail/" + String.valueOf(articleId);
 
     }
 

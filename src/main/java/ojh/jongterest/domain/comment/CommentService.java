@@ -39,7 +39,8 @@ public class CommentService {
         commentRepository.delete(articleId, commentId);
     }
 
-    public void updateComment(Long articleId, Long commentId, String content) {
-        commentRepository.update(articleId, commentId, content);
+    public void updateComment(Long commentId, String content) {
+
+        commentRepository.update(commentId, content);
     }
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{template/base:: layout(~{::section})}">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{template/scriptBase:: layout(~{::section},~{::link},~{::script})}">
 <body>
+<link/>
 <section>
     <div>
         <div style="text-align: center; max-width: 500px;margin: 4rem auto;">
@@ -52,6 +53,10 @@
 
         </div>
     </div>
+
+    <div th:replace="template/user/fragments/project_list.html :: project_list"></div>
+
 </section>
 </body>
+<script defer th:src="@{/js/magicgridForProject.js}"></script>
 </html>

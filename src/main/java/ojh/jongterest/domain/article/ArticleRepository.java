@@ -1,9 +1,6 @@
 package ojh.jongterest.domain.article;
 
-import ojh.jongterest.domain.user.User;
-
 import java.util.List;
-import java.util.Optional;
 
 public interface ArticleRepository {
 
@@ -13,6 +10,8 @@ public interface ArticleRepository {
 
     List<Article> findAll();
     Article update(Article article);
-    void delete(Long userId, Long articleId);
+    void delete(Article article);
     void clearStore();
+
+    List<Article> findAllByProjectId(Long projectId);
 }

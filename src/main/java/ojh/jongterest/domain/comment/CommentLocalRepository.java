@@ -2,12 +2,10 @@ package ojh.jongterest.domain.comment;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ojh.jongterest.domain.article.Article;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -80,7 +78,7 @@ public class CommentLocalRepository implements CommentRepository {
     }
 
     @Override
-    public Comment update(Long articleId, Long commentId, String content) {
+    public Comment update(Long commentId, String content) {
         Comment findComment = findById(commentId);
         findComment.update(content, LocalDateTime.now());
 

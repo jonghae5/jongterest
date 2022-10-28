@@ -3,7 +3,7 @@ package ojh.jongterest.service;
 import ojh.jongterest.domain.user.UserService;
 import ojh.jongterest.web.controller.user.Gender;
 import ojh.jongterest.domain.user.UserRepository;
-import ojh.jongterest.web.login.LoginForm;
+import ojh.jongterest.web.controller.login.LoginForm;
 import ojh.jongterest.domain.user.User;
 import ojh.jongterest.web.controller.user.UserCreateForm;
 import org.assertj.core.api.Assertions;

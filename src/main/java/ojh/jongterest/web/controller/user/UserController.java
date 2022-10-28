@@ -2,6 +2,9 @@ package ojh.jongterest.web.controller.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ojh.jongterest.domain.project.Project;
+import ojh.jongterest.domain.project.ProjectRepository;
+import ojh.jongterest.domain.project.ProjectService;
 import ojh.jongterest.domain.user.User;
 import ojh.jongterest.domain.user.UserRepository;
 import ojh.jongterest.domain.user.UserService;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 
 @Slf4j
@@ -27,6 +31,9 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final UserService userService;
+    private final ProjectRepository projectRepository;
+    private final ProjectService projectService;
+
     private final UserCreateFormValidator userCreateFormValidator;
     private final UserUpdateFormValidator userUpdateFormValidator;
 
@@ -54,8 +61,11 @@ public class UserController {
 
 
     @GetMapping("/detail/{userId}")
-    public String getDetailUser(@PathVariable Long userId, Model model) {
+    public String DetailUserView(@PathVariable Long userId, Model model) {
         User findUser = userRepository.findById(userId);
+
+        List<Project> projects = projectRepository.findByUserId(userId);
+        model.addAttribute("projects", projects);
         model.addAttribute("user", findUser);
         return "template/user/detail";
     }

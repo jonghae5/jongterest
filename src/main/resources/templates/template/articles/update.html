@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{template/scriptBase:: layout(~{::section},~{::link},~{::script})}">
+<link/>
+<body>
+<section class="jongterest_container">
+    <form action="update.html" th:object="${article}" th:action method="post" enctype="multipart/form-data">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p class="jongterest_field-error" th:each="err : ${#fields.globalErrors()}"
+               th:text="${err}">전체 오류 메시지</p></div>
+        <div>
+            <div class="mb-4">
+                <h4>Article Update</h4>
+            </div>
+            <div class="jongterest_space">
+                <label for="loginId">제목</label>
+                <input type="text" id="loginId" th:field="*{title}" class="form-control"
+                       th:errorclass="jongterest_field-error">
+                <div class="jongterest_field-error" th:errors="*{title}">제목 오류</div>
+            </div>
+
+            <div class="jongterest_filebox">
+                <input class="jongterest_upload-name" value="미선택시 기존 파일 사용" placeholder="미선택시 기존 파일 사용" readonly="readonly">
+                <label th:class="jongterest_input-file-button" for="input-file">파일찾기</label>
+                <input type="file" id="input-file" name="articleImage" style="display: none;"/>
+            </div>
+<!--            <div class="jongterest_filebox">-->
+<!--                <select th:field="*{projectId}" class="form-select">-->
+<!--                    <option th:value="0">==프로젝트 선택==</option>-->
+<!--                    <option th:each="projectOption : ${projects}" th:value="${projectOption.projectId}"-->
+<!--                            th:text="${projectOption.title}">TITLE</option>-->
+<!--                </select>-->
+<!--            </div>-->
+            <div class="jongterest_space">
+                <label for="content">내용</label>
+                <textarea id="content"  th:field="*{content}" th:class="summernote"
+                          th:name="editordata" th:errorclass="jongterest_field-error"></textarea>
+                <div class="jongterest_field-error" th:errors="*{content}">내용 오류</div>
+            </div>
+        </div>
+
+        <hr class="my-4">
+        <div class="row">
+            <div class="col">
+                <button class="w-100 btn btn-primary btn-lg" type="submit">
+                    수정
+                </button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg"
+                        onclick="location.href='update.html'"
+                        th:onclick="|location.href='@{/}'|" type="button">
+                    취소
+                </button>
+            </div>
+        </div>
+
+    </form>
+</section>
+
+</body>
+<script>
+$(document).ready(function() {
+  $('.summernote').summernote({
+		  height: 300,                 // 에디터 높이
+		  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+		  lang: "ko-KR",					// 한글 설정
+		  placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
+
+	});
+});
+
+$(document).ready(function() {
+    $("#input-file").on('change',function(){
+      console.log("hello");
+      var fileName = $("#input-file").val();
+      $(".jongterest_upload-name").val(fileName);
+    });
+});
+
+</script>
+</html>
+
+
+

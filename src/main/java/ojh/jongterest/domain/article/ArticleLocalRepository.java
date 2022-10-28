@@ -2,7 +2,6 @@ package ojh.jongterest.domain.article;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ojh.jongterest.domain.user.User;
 import ojh.jongterest.domain.user.UserRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.LinkedMultiValueMap;
@@ -21,16 +20,21 @@ public class ArticleLocalRepository implements ArticleRepository{
     private final UserRepository userRepository;
     // user, articles
     private static final MultiValueMap<Long, Long> userArticleRepository = new LinkedMultiValueMap<>();
+
+    private static final MultiValueMap<Long, Long> projectArticleRepository = new LinkedMultiValueMap<>();
     private static final ConcurrentHashMap<Long, Article> articleRepository = new ConcurrentHashMap<>();
     private static AtomicLong sequence = new AtomicLong(0);
 
     @Override
-    public Article save(Long userId,Article article) {
+    public Article save(Long userId, Article article) {
 
         article.setArticleId(sequence.addAndGet(1));
 
         articleRepository.put(sequence.get(),article);
         userArticleRepository.add(userId, article.getArticleId());
+
+        projectArticleRepository.add(article.getProject().getProjectId(), article.getArticleId());
+
         return article;
     }
 
@@ -75,17 +79,37 @@ public class ArticleLocalRepository implements ArticleRepository{
     }
 
     @Override
-    public void delete(Long userId, Long articleId) {
-        Article findArticle = findById(articleId);
-
+    public void delete(Article article) {
+        Long userId = article.getUser().getUserId();
         List<Long> findArticleIds = userArticleRepository.get(userId);
-        findArticleIds.remove(articleId);
+        findArticleIds.remove(article.getArticleId());
         userArticleRepository.replace(userId, findArticleIds);
-        articleRepository.remove(articleId);
+
+        List<Long> findProjectArticleIds = projectArticleRepository.get(article.getProject().getProjectId());
+        findProjectArticleIds.remove(article.getArticleId());
+        projectArticleRepository.replace(article.getProject().getProjectId(), findProjectArticleIds);
+
+        articleRepository.remove(article.getArticleId());
     }
+
+
+    @Override
+    public List<Article> findAllByProjectId(Long projectId) {
+        List<Article> result = new ArrayList<>();
+
+        List<Long> articleIds = projectArticleRepository.get(projectId);
+        for (Long articleId : articleIds) {
+            result.add(articleRepository.get(articleId));
+        }
+
+        return result;
+    }
+
     @Override
     public void clearStore() {
         userArticleRepository.clear();
         articleRepository.clear();
     }
+
+
 }

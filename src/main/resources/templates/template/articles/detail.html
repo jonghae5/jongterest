@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{template/scriptBase:: layout(~{::section},~{::style},~{::script})}">
+<!--<script defer th:src="@{/js/updateComment.js}"></script>-->
+<script></script>
+<style></style>
+<body>
+<section>
+    <div>
+        <div style ="text-align: center; max-width: 700px;margin: 4rem auto;">
+            <h1 th:text="${article?.title}">
+                default title
+            </h1>
+            <form th:action="@{/like/{articleId}/{userId}(articleId=${article.articleId}, userId=${session.loginUser.userId})}" method="post" style="vertical-align: middle;">
+            <div style="height: 2rem;">
+                <button type="submit" style="background-color:#FFF; color:#FFF; border: none;">
+                <i class="material-icons" style="vertical-align: middle; font-size:1.2rem; color: #f77 ">
+                    favorite
+                </i>
+                </button>
+                <span th:text="${article?.likeRecord}" style="vertical-align: middle; font-size:1.2rem;">
+            </span>
+            </div>
+            </form>
+
+            <a th:href="@{/user/detail/{userId}(userId=${article?.user.userId})}">
+            <h5 th:text="${article?.user.profile.nickname}">
+                {{ target_article.user.profile.nickname }}
+            </h5>
+            </a>
+            <hr>
+            <img style="width: 80%; border-radius: 1rem; margin: 2rem"
+                 th:src="@{/images/{filePath}(filePath=${article?.articleImage.storeFilePath})}" alt="">
+            <div class="text-start"  th:utext="${article?.content}">
+                default content
+            </div>
+
+            <a th:href="@{/articles/update/{articleId}(articleId=${article?.articleId})}"
+               class=" btn btn-primary rounded-pill col-3"
+               th:if="${session.loginUser.userId ==article?.user.userId}">
+                Update
+            </a>
+            <a th:href="@{/articles/delete/{articleId}(articleId=${article?.articleId})}"
+               class="btn btn-danger rounded-pill col-3"
+               th:if="${session.loginUser.userId ==article?.user.userId}">
+                Delete
+            </a>
+            <hr>
+            <th:block th:each="comment : ${article.comments}">
+                <div th:replace="~{/template/comments/detail :: commentDetail(${article},${comment}) }"></div>
+            </th:block>
+
+            <div th:replace="~{/template/comments/create :: commentCreate(${article}, ${commentForm}) }"></div>
+        </div>
+    </div>
+
+</section>
+</body>
+</html>
+
+
+

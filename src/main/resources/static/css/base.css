@@ -71,7 +71,82 @@ margin-bottom: 10px;
 }
 
 
+.jongterest_filebox .jongterest_upload-name {
+    display: inline-block;
+    height: 40px;
+    padding: 0 10px;
+    vertical-align: middle;
+    border: 1px solid #dddddd;
+    width: 78%;
+    color: #999999;
+}
+
+.jongterest_filebox label {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    vertical-align: middle;
+    background-color: #999999;
+    cursor: pointer;
+    height: 40px;
+    margin-left: 10px;
+}
+
+.jongterest_filebox input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+}
+
 .jongterest_article_container img {
+  width: 100%;
+  border-radius: 1rem;
+}
+
+
+.jongterest_project_container {
+ padding: 0;
+ margin: 0, auto;
+}
+
+
+.jongterest_project_container div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 1rem;
+}
+
+.jongterest_project_container img {
+  width: 7rem;
+  height: 7rem;
+  object-fit: cover;
+  border-radius: 1rem;
+
+}
+
+.jongterest_project_list_container {
+ padding: 0;
+ margin: 0, auto;
+}
+.jongterest_project_list_container a {
+  width: 45%;
+  max-width:250px
+
+}
+.jongterest_project_list_container div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 1rem;
+}
+
+.jongterest_project_list_container img {
   width: 100%;
   border-radius: 1rem;
 }

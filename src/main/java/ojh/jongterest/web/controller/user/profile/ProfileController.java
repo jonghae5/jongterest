@@ -40,7 +40,7 @@ public class ProfileController {
 
         if (bindingResult.hasErrors()) {
             log.error("errors={}", bindingResult);
-            return "template/article/create";
+            return "template/articles/create";
         }
 
         ImageFile profileImage = fileStore.storeFile(profileForm.getProfileImage());
@@ -72,7 +72,7 @@ public class ProfileController {
 
         if (bindingResult.hasErrors()) {
             log.error("errors={}", bindingResult);
-            return "template/article/create";
+            return "template/articles/create";
         }
 
         ImageFile profileImage =  fileStore.storeFile(profileForm.getProfileImage());

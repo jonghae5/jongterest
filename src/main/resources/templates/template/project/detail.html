@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{template/scriptBase:: layout(~{::section},~{::link},~{::script})}">
+<link/>
+<body>
+<section>
+
+    <div>
+        <div style="text-align: center; max-width: 500px; margin: 4rem auto 1.5rem auto;">
+
+            <img
+                 th:src="@{/images/{filePath}(filePath=${project?.projectImage.storeFilePath})}"
+                 alt=""
+                 style="height: 12rem; width: 12rem; border-radius : 20rem; margin-bottom: 2rem; object-fit:cover;">
+            <h6 style="font-family: 'NanumSquareB';" th:text="${project.user.profile.nickname}" }>
+
+            </h6>
+            <h2 style="font-family: 'NanumSquareB';" th:text="${project.title}" }>
+
+            </h2>
+            <h5 th:utext="${project.description}">
+            </h5>
+
+        </div>
+
+        <div class="text-center mb-5">
+        <th:block th:if="${session.loginUser.loginId!=null and session.loginUser.userId!=project.user.userId}">
+            <form th:action="@{/subscription/subscribe/{projectId}(projectId=${project.projectId})}" method="post" th:if="${subscription == false}">
+
+            <button class="btn btn-primary rounded-pill px-4">Subscribe</button>
+            </form>
+            <form th:action="@{/subscription/unsubscribe/{projectId}(projectId=${project.projectId})}" method="post" th:if="${subscription == true}">
+            <button class="btn btn-dark rounded-pill px-4">Unsubscribe</button>
+            </form>
+        </th:block>
+            <a th:href="@{/projects/delete/{projectId}(projectId=${project.projectId})}"
+               class="btn btn-danger rounded-pill px-4" th:if="${session.loginUser.userId == project.user.userId}">
+                Delete
+            </a>
+        </div>
+
+
+        <div>
+            <div th:class="|jongterest_project_list_container|">
+                <th:block th:each="article : ${project.articles}" th:if="${!#lists.isEmpty(project.articles)}">
+                    <a th:href="@{/articles/detail/{articleId}(articleId=${article.articleId})}">
+                        <div style="display: block; text-align: center">
+                            <img th:src="@{/images/{filePath}(filePath=${article?.articleImage.storeFilePath})}"
+                                 th:if="${article!=null}"
+                                 alt="">
+                        </div>
+                    </a>
+                </th:block>
+            </div>
+
+
+            <div class="text-center">
+                <h1 th:if="${#lists.isEmpty(project.articles)}">>No Articles YET!</h1>
+            </div>
+
+
+            <!--{% include 'snippets/pagination.html' with page_obj=page_obj %}-->
+
+            <div style="text-align : center;">
+                <a href="{% url 'projectapp:create' %}"
+                   th:href="@{/articles/create?p={projectId}(projectId=${project.projectId})}"
+                   class="btn btn-dark rounded-pill mt-3 mb-3 px-3">
+                    Create Article
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<script defer th:src="@{/js/magicgridForProjectArticle.js}"></script>
+</body>

@@ -3,11 +3,17 @@ package ojh.jongterest.web;
 import lombok.RequiredArgsConstructor;
 import ojh.jongterest.domain.article.Article;
 import ojh.jongterest.domain.article.ArticleRepository;
+import ojh.jongterest.domain.article.ArticleService;
 import ojh.jongterest.domain.comment.Comment;
 import ojh.jongterest.domain.comment.CommentRepository;
+import ojh.jongterest.domain.comment.CommentService;
 import ojh.jongterest.domain.imageFile.ImageFile;
+import ojh.jongterest.domain.project.Project;
+import ojh.jongterest.domain.project.ProjectRepository;
+import ojh.jongterest.domain.project.ProjectService;
 import ojh.jongterest.domain.user.User;
 import ojh.jongterest.domain.user.UserRepository;
+import ojh.jongterest.domain.user.UserService;
 import ojh.jongterest.domain.user.profile.UserProfile;
 import ojh.jongterest.web.controller.comment.CommentForm;
 import ojh.jongterest.web.controller.user.Gender;
@@ -25,6 +31,12 @@ public class TestDataInit {
     private final UserRepository userRepository;
     private final ArticleRepository articleRepository;
     private final CommentRepository commentRepository;
+    private final ProjectRepository projectRepository;
+
+    private final UserService userService;
+    private final CommentService commentService;
+    private final ArticleService articleService;
+    private final ProjectService projectService;
 
 
     /**
@@ -37,6 +49,7 @@ public class TestDataInit {
         User user2 = new User("dhwhdgo2368","123", Gender.FEMALE);
         user2.setJoinedDate(LocalDateTime.now());
 
+
         ImageFile profileImage = new ImageFile("default.jpeg", "default.jpeg");
         UserProfile userProfile = new UserProfile(profileImage, "John", "테스트메세지");
         user.createProfile(userProfile);
@@ -46,23 +59,23 @@ public class TestDataInit {
         UserProfile userProfile2 = new UserProfile(profileImage2, "John2", "테스트메세지2");
         user2.createProfile(userProfile2);
 
-        Article article = new Article(user, "Test Article", "컨텐츠 Test", profileImage);
-
-        CommentForm commentForm = new CommentForm();
-        commentForm.setContent("Test Content");
-
-        Comment comment = new Comment(commentForm.getContent(), LocalDateTime.now(), LocalDateTime.now());
-        comment.setUser(user);
-        List<Comment> commentsList = new ArrayList<>();
-        commentsList.add(comment);
-        article.setComments(commentsList);
-
-
         userRepository.save(user);
         userRepository.save(user2);
 
-        articleRepository.save(user.getUserId(), article);
-        commentRepository.save(user.getUserId(),article.getArticleId(), comment);
+        Project project = new Project();
+        ImageFile projectImage = new ImageFile("default.jpeg", "default.jpeg");
+
+        Project resultProject = projectService.createProject(user, "테스트 제목", "테스트 설명", projectImage);
+
+        Article article = new Article(user, "Test Article", "컨텐츠 Test", profileImage, resultProject);
+
+        articleService.saveArticle(user.getUserId(), article);
+
+        CommentForm commentForm = new CommentForm();
+        commentForm.setContent("Test Content");
+        commentService.saveComment(user.getUserId(), article.getArticleId(), commentForm.getContent());
+
+
 
 
     }

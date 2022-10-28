@@ -29,7 +29,7 @@ commentUpdate : function (form) {
        if (con_check === true) {
        $.ajax({
        type: 'POST',
-       url: '/comment/update/' + data.articleId + "/" + data.commentId,
+       url: '/comments/update/' + data.articleId + "/" + data.commentId,
        dataType: 'JSON',
        contentType: 'application/json; charset=utf-8',
        data: JSON.stringify(data)

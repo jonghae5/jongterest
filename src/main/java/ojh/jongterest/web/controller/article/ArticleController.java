@@ -6,12 +6,15 @@ import ojh.jongterest.domain.article.Article;
 import ojh.jongterest.domain.article.ArticleRepository;
 import ojh.jongterest.domain.article.ArticleService;
 import ojh.jongterest.domain.imageFile.ImageFile;
+import ojh.jongterest.domain.project.Project;
+import ojh.jongterest.domain.project.ProjectRepository;
 import ojh.jongterest.domain.user.User;
 import ojh.jongterest.domain.user.UserService;
 import ojh.jongterest.file.FileStore;
 import ojh.jongterest.web.argumentResolver.Login;
 import ojh.jongterest.web.controller.comment.CommentForm;
-import ojh.jongterest.web.validation.ArticleFormValidator;
+import ojh.jongterest.web.validation.ArticleCreateFormValidator;
+import ojh.jongterest.web.validation.ArticleUpdateFormValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,43 +27,50 @@ import java.util.List;
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/article")
+@RequestMapping("/articles")
 public class ArticleController {
 
     private final UserService userService;
     private final ArticleRepository articleRepository;
+    private final ProjectRepository projectRepository;
     private final ArticleService articleService;
     private final FileStore fileStore;
-    private final ArticleFormValidator articleFormValidator;
+    private final ArticleCreateFormValidator articleCreateFormValidator;
+    private final ArticleUpdateFormValidator articleUpdateFormValidator;
     @GetMapping("/list")
-    public String getList(Model model) {
+    public String listView(Model model) {
 
         model.addAttribute("articles", articleService.getArticleList());
-        return "template/article/list";
+        return "template/articles/list";
     }
 
 
     @GetMapping("/create")
-    public String createArticleForm(@Login User loginUser, @ModelAttribute("article") ArticleForm articleForm) {
-        return "template/article/create";
+    public String createArticleForm(@Login User loginUser, @ModelAttribute("article") ArticleForm articleForm, Model model) {
+        List<Project> projects = projectRepository.findAll();
+        model.addAttribute("projects", projects);
+        return "template/articles/create";
     }
 
     @PostMapping("/create")
-    public String createArticle(@Login User loginUser, @ModelAttribute("article") ArticleForm articleForm, BindingResult bindingResult) throws IOException {
+    public String createArticle(@Login User loginUser, @ModelAttribute("article") ArticleForm articleForm, BindingResult bindingResult,Model model) throws IOException {
 
-        articleFormValidator.validate(articleForm, bindingResult);
+        articleCreateFormValidator.validate(articleForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
             log.error("errors={}", bindingResult);
-            return "template/article/create";
+            List<Project> projects = projectRepository.findAll();
+            model.addAttribute("projects", projects);
+            return "template/articles/create";
         }
 
         ImageFile articleImage =  fileStore.storeFile(articleForm.getArticleImage());
-        Article newArticle = new Article(loginUser, articleForm.getTitle(), articleForm.getContent(), articleImage);
+        Project project = projectRepository.findById(articleForm.getProjectId());
+        Article newArticle = new Article(loginUser, articleForm.getTitle(), articleForm.getContent(), articleImage, project);
 
-        articleService.save(loginUser.getUserId(), newArticle);
+        articleService.saveArticle(loginUser.getUserId(), newArticle);
 
-        return  "redirect:/article/detail/" + String.valueOf(newArticle.getArticleId());
+        return  "redirect:/articles/detail/" + String.valueOf(newArticle.getArticleId());
     }
 
 
@@ -71,7 +81,7 @@ public class ArticleController {
         Article article = articleRepository.findById(articleId);
         model.addAttribute("article", article);
         model.addAttribute("commentForm", new CommentForm());
-        return "template/article/detail";
+        return "template/articles/detail";
     }
 
 
@@ -85,7 +95,7 @@ public class ArticleController {
         }
 
         model.addAttribute("article", findArticle);
-        return "template/article/update";
+        return "template/articles/update";
     }
 
 
@@ -95,21 +105,32 @@ public class ArticleController {
                                 BindingResult bindingResult,
                                 HttpServletRequest request) throws IOException {
 
+
+
         Article findArticle = articleRepository.findById(articleId);
         if (loginUser.getUserId() != findArticle.getUser().getUserId()) {
             redirectUrl(request);
         }
-        articleFormValidator.validate(articleForm, bindingResult);
+
+        articleUpdateFormValidator.validate(articleForm, bindingResult);
         if (bindingResult.hasErrors()) {
             log.error("errors={}", bindingResult);
-            return "template/article/update";
+            return "template/articles/update";
         }
 
-        ImageFile articleImage =  fileStore.storeFile(articleForm.getArticleImage());
-        findArticle.updateArticle(articleForm.getTitle(), articleForm.getContent(), articleImage);
-        articleRepository.update(findArticle);
+        log.info("Image={}",articleForm.getArticleImage().getOriginalFilename());
 
-        return "redirect:/article/detail/" + String.valueOf(articleId);
+        if (articleForm.getArticleImage().getOriginalFilename().isEmpty()) {
+            findArticle.update(articleForm.getTitle(), articleForm.getContent(), findArticle.getArticleImage());
+        } else {
+            ImageFile articleImage =  fileStore.storeFile(articleForm.getArticleImage());
+            findArticle.update(articleForm.getTitle(), articleForm.getContent(), articleImage);
+        }
+
+        articleService.updateArticle(findArticle);
+
+
+        return "redirect:/articles/detail/" + String.valueOf(articleId);
     }
 
 
@@ -124,7 +145,7 @@ public class ArticleController {
         }
 
         model.addAttribute("article", findArticle);
-        return "template/article/delete";
+        return "template/articles/delete";
     }
 
     @PostMapping("/delete/{articleId}")
@@ -136,9 +157,10 @@ public class ArticleController {
             redirectUrl(request);
         }
 
-        articleRepository.delete(loginUser.getUserId(),articleId);
+        articleService.deleteArticle(findArticle);
 
-        return "redirect:/article/list";
+
+        return "redirect:/articles/list";
     }
 
 
