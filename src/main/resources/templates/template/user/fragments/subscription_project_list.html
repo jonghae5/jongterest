@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{template/base:: layout(~{::section})}">
+
+<body>
+<section th:fragment="subscription_project_list">
+    <div class="jongterest_project_container" th:if="${!#lists.isEmpty(subscription_projects)}">
+        <th:block th:each="subscription_project : ${subscription_projects}" th:if="${!#lists.isEmpty(subscription_projects)}">
+
+            <a th:href="@{/projects/detail/{projectId}(projectId=${subscription_project.projectId})}">
+                <div style="display: block; text-align: center">
+                    <img th:src="@{/images/{filePath}(filePath=${subscription_project?.projectImage.storeFilePath})}"
+                         th:if="${subscription_project!=null}"
+                         alt="">
+                    <h5 class="mt-2" style="font-family: 'NaNumSquareB';"
+                        th:text="${#strings.abbreviate(subscription_project.title,8)}">
+                    </h5>
+                </div>
+            </a>
+        </th:block>
+
+    </div>
+
+    <div class="text-center" th:if="${#lists.isEmpty(subscription_projects)}">
+        <h1>No Subscription Projects YET!</h1>
+    </div>
+    </th:block>
+
+    <!--{% include 'snippets/pagination.html' with page_obj=page_obj %}-->
+
+<!--    <div style="text-align : center;">-->
+<!--        <a th:href="@{/projects/create}"-->
+<!--           class="btn btn-dark rounded-pill mt-3 mb-3 px-3">-->
+<!--            Create Project-->
+<!--        </a>-->
+<!--    </div>-->
+</section>
+</body>
+</html>

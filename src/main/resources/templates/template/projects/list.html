@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{template/scriptBase:: layout(~{::section},~{::link},~{::script})}">
+
+<link/>
+<script defer th:src="@{/js/magicgridForProject.js}"></script>
+
+<body>
+<section>
+    <div class="jongterest_project_container" th:if="${!#lists.isEmpty(projects)}">
+        <th:block th:each="project : ${projects}" th:if="${!#lists.isEmpty(projects)}">
+
+            <a th:href="@{/projects/detail/{projectId}(projectId=${project.projectId})}">
+                <div style="display: block; text-align: center">
+                    <img th:src="@{/images/{filePath}(filePath=${project?.projectImage.storeFilePath})}"
+                         th:if="${project!=null}"
+                         alt="">
+                    <h5 class="mt-2" style="font-family: 'NaNumSquareB';"
+                        th:text="${#strings.abbreviate(project.title,8)}">
+                    </h5>
+                </div>
+            </a>
+        </th:block>
+
+    </div>
+
+    <div class="text-center" th:if="${#lists.isEmpty(projects)}">
+        <h1>No Projects YET!</h1>
+    </div>
+    </th:block>
+
+    <!--{% include 'snippets/pagination.html' with page_obj=page_obj %}-->
+
+    <div style="text-align : center;">
+
+        <a th:href="@{|/user/profile/create/${session.loginUser.userId}?redirectURL=${#httpServletRequest.requestURI}|}"
+           class="btn btn-dark rounded-pill mt-3 mb-3 px-3"
+           th:if="${session.loginUser !=null and session.loginUser.profile == null}"
+        >
+            Profile 생성
+        </a>
+        <a href="{% url 'projectapp:create' %}"
+           th:href="@{|/projects/create?redirectURL=${#httpServletRequest.requestURI}|}"
+           class="btn btn-dark rounded-pill mt-3 mb-3 px-3"
+           th:if="${session.loginUser !=null and session.loginUser.profile != null}">
+            Create Project
+        </a>
+    </div>
+</section>
+
+</body>
+
+</html>

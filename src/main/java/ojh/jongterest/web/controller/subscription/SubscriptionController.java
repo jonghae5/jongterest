@@ -24,10 +24,11 @@ public class SubscriptionController {
 
 //    private ArticleService articleService;
     private final SubscriptionService subscriptionService;
+    private final ArticleService articleService;
 
     @GetMapping("/list")
     public String subscriptionListView(@Login User loginUser, Model model) {
-        List<Article> articles = subscriptionService.findAllBySubscription(loginUser);
+        List<Article> articles = articleService.findArticlesWithUserProjectArticleContainingUser(loginUser);
         model.addAttribute("articles",articles);
         return "template/subscription/list";
     }
@@ -36,17 +37,15 @@ public class SubscriptionController {
     public String subscribeProject(@PathVariable("projectId") Long projectId, @Login User loginUser,
                                    HttpServletRequest request){
 
-        log.info("subscription Controller 실행");
+        log.info("subscription subscribeProject 실행");
         subscriptionService.saveSubscription(loginUser.getUserId(),projectId);
-
-
         return redirectUrl(request);
     }
 
     @PostMapping("/unsubscribe/{projectId}")
     public String unsubscribeProject(@PathVariable("projectId") Long projectId, @Login User loginUser,
                                    HttpServletRequest request){
-        log.info("unscribe 실행");
+        log.info("subscription unsubscribeProject  실행");
         subscriptionService.deleteSubscription(loginUser.getUserId(),projectId);
         return redirectUrl(request);
     }

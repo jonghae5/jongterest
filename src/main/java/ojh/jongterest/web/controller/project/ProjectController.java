@@ -4,14 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ojh.jongterest.domain.imageFile.ImageFile;
 import ojh.jongterest.domain.project.Project;
-import ojh.jongterest.domain.project.ProjectRepository;
+import ojh.jongterest.domain.project.repository.ProjectRepository;
 import ojh.jongterest.domain.project.ProjectService;
 import ojh.jongterest.domain.subscription.SubscriptionService;
 import ojh.jongterest.domain.user.User;
-import ojh.jongterest.domain.user.profile.ProfileForm;
 import ojh.jongterest.file.FileStore;
 import ojh.jongterest.web.argumentResolver.Login;
-import ojh.jongterest.web.validation.ProfileFormValidator;
 import ojh.jongterest.web.validation.ProjectFormValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,42 +37,41 @@ public class ProjectController {
 
         List<Project> projects = projectService.getProjectList();
         model.addAttribute("projects", projects);
-        return "template/project/list";
+        return "template/projects/list";
     }
 
     @GetMapping("/detail/{projectId}")
     public String detailProjectView(@Login User loginUser, @PathVariable("projectId") Long projectId, Model model) {
-        Project findProject = projectRepository.findById(projectId);
+
+
+        Project findProject = projectRepository.findOne(projectId).get();
         model.addAttribute("project", findProject);
 
         Boolean isSubscription = subscriptionService.isSubscription(loginUser.getUserId(), projectId);
         log.info("isSubscription={}",isSubscription);
         model.addAttribute("subscription",isSubscription);
-        return "template/project/detail";
+        return "template/projects/detail";
     }
 
     @GetMapping("/create")
-    public String createProjectForm(@RequestParam(defaultValue = "/", required = false) String redirectURL, @Login User loginUser,
+    public String createProjectForm(@Login User loginUser,
                                     @ModelAttribute("projectForm") ProjectForm projectForm) {
-        return "template/project/create";
+        return "template/projects/create";
     }
 
     @PostMapping("/create")
     public String createProject(@Login User loginUser, @ModelAttribute("projectForm") ProjectForm projectForm, BindingResult bindingResult,
-                                HttpSession session, @RequestParam(defaultValue = "/", required = false) String redirectURL) throws IOException {
+                                HttpSession session, HttpServletRequest request,
+                                @RequestParam(defaultValue = "/", required = false) String redirectURL) throws IOException {
         projectFormValidator.validate(projectForm, bindingResult);
         if (bindingResult.hasErrors()) {
             log.error("errors={}", bindingResult);
             return "template/projects/create";
         }
-        ImageFile projectImage = fileStore.storeFile(projectForm.getProjectImage());
-        Project createProject = projectService.createProject(loginUser, projectForm.getTitle(), projectForm.getDescription(), projectImage);
 
-        if (!redirectURL.equals("/")) {
-            return "redirect:" + redirectURL;
-        }
-        return "redirect:/projects/detail/" + String.valueOf(createProject.getProjectId());
+        projectService.createProject(loginUser, projectForm);
 
+        return "redirect:" + redirectURL;
     }
 
     @GetMapping("/delete/{projectId}")
@@ -85,11 +82,9 @@ public class ProjectController {
 
 
     @PostMapping("/delete/{projectId}")
-    public String createProject(@Login User loginUser, @PathVariable("projectId") Long projectId) {
-        //TODO 로직
-        projectService.deleteProject(projectId);
+    public String deleteProject(@Login User loginUser, @PathVariable("projectId") Long projectId) {
 
-
+        projectService.deleteProjectById(projectId);
         return "redirect:/projects/list";
     }
 

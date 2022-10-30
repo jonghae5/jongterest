@@ -3,7 +3,7 @@ package ojh.jongterest.web.controller.comment;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ojh.jongterest.domain.article.Article;
-import ojh.jongterest.domain.article.ArticleRepository;
+import ojh.jongterest.domain.article.repository.ArticleRepository;
 import ojh.jongterest.domain.comment.CommentService;
 import ojh.jongterest.domain.user.User;
 import ojh.jongterest.web.argumentResolver.Login;
@@ -43,7 +43,7 @@ public class CommentController {
                               @ModelAttribute("form") CommentForm form,
                                 HttpServletRequest request) {
 
-        Article article = articleRepository.findById(articleId);
+        Article article = articleRepository.findOne(articleId).get();
         if (loginUser.getUserId() != article.getUser().getUserId()) {
             redirectUrl(request);
         }

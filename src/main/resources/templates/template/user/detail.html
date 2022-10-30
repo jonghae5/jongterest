@@ -24,7 +24,7 @@
                 Default Message
             </h5>
 
-            <a th:href="@{/user/profile/create/{id}(id = ${session.loginUser?.userId})}"
+            <a th:href="@{|/user/profile/create/{id}?redirectURL=${#httpServletRequest.requestURI}(id = ${session.loginUser?.userId})|}"
                th:if="${session.loginUser.userId ==user.userId} and ${session.loginUser.profile==null}">
                 <h2 style="font-family: 'NanumSquareB';">
                     Create Profile
@@ -55,6 +55,8 @@
     </div>
 
     <div th:replace="template/user/fragments/project_list.html :: project_list"></div>
+    <hr>
+    <div th:replace="template/user/fragments/subscription_project_list.html :: subscription_project_list"></div>
 
 </section>
 </body>

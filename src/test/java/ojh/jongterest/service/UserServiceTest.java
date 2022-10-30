@@ -2,7 +2,7 @@ package ojh.jongterest.service;
 
 import ojh.jongterest.domain.user.UserService;
 import ojh.jongterest.web.controller.user.Gender;
-import ojh.jongterest.domain.user.UserRepository;
+import ojh.jongterest.domain.user.repository.UserRepositoryOld;
 import ojh.jongterest.web.controller.login.LoginForm;
 import ojh.jongterest.domain.user.User;
 import ojh.jongterest.web.controller.user.UserCreateForm;
@@ -17,11 +17,11 @@ class UserServiceTest {
     @Autowired
     UserService userService;
     @Autowired
-    UserRepository userRepository;
+    UserRepositoryOld userRepository;
 
     @Test
     void signUp() {
-        User user1 = new User("hello", "id", "password", Gender.MALE);
+        User user1 = new User("id", "password", Gender.MALE);
         UserCreateForm userCreateForm = new UserCreateForm("id","password",Gender.FEMALE);
         userService.signUp(userCreateForm);
         User findUser = userService.findUserByLoginId(user1.getLoginId()).get();
@@ -30,7 +30,7 @@ class UserServiceTest {
 
     @Test
     void login() {
-        User user1 = new User("hello", "id", "password", Gender.MALE);
+        User user1 = new User("id", "password", Gender.MALE);
         UserCreateForm userCreateForm = new UserCreateForm("id","password",Gender.FEMALE);
         userService.signUp(userCreateForm);
 

@@ -3,11 +3,11 @@ package ojh.jongterest.web.controller.article;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ojh.jongterest.domain.article.Article;
-import ojh.jongterest.domain.article.ArticleRepository;
+import ojh.jongterest.domain.article.repository.ArticleRepository;
 import ojh.jongterest.domain.article.ArticleService;
 import ojh.jongterest.domain.imageFile.ImageFile;
 import ojh.jongterest.domain.project.Project;
-import ojh.jongterest.domain.project.ProjectRepository;
+import ojh.jongterest.domain.project.repository.ProjectRepository;
 import ojh.jongterest.domain.user.User;
 import ojh.jongterest.domain.user.UserService;
 import ojh.jongterest.file.FileStore;
@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -53,7 +54,9 @@ public class ArticleController {
     }
 
     @PostMapping("/create")
-    public String createArticle(@Login User loginUser, @ModelAttribute("article") ArticleForm articleForm, BindingResult bindingResult,Model model) throws IOException {
+    public String createArticle(@Login User loginUser, @ModelAttribute("article") ArticleForm articleForm, BindingResult bindingResult,
+                                Model model,HttpServletRequest request,
+                                @RequestParam(defaultValue = "/") String requestURL) throws IOException {
 
         articleCreateFormValidator.validate(articleForm, bindingResult);
 
@@ -64,12 +67,11 @@ public class ArticleController {
             return "template/articles/create";
         }
 
-        ImageFile articleImage =  fileStore.storeFile(articleForm.getArticleImage());
-        Project project = projectRepository.findById(articleForm.getProjectId());
-        Article newArticle = new Article(loginUser, articleForm.getTitle(), articleForm.getContent(), articleImage, project);
+        Article newArticle = articleService.saveArticle(loginUser, articleForm);
 
-        articleService.saveArticle(loginUser.getUserId(), newArticle);
-
+        if (!requestURL.equals("/")) {
+            return "redirect:" + requestURL;
+        }
         return  "redirect:/articles/detail/" + String.valueOf(newArticle.getArticleId());
     }
 
@@ -78,7 +80,7 @@ public class ArticleController {
 
     @GetMapping("/detail/{articleId}")
     public String getDetailArticle(@Login User loginUser, @PathVariable("articleId") Long articleId, Model model) {
-        Article article = articleRepository.findById(articleId);
+        Article article = articleRepository.findOne(articleId).get();
         model.addAttribute("article", article);
         model.addAttribute("commentForm", new CommentForm());
         return "template/articles/detail";
@@ -88,7 +90,7 @@ public class ArticleController {
     @GetMapping("/update/{articleId}")
     private String updateArticleForm(@Login User loginUser, @PathVariable("articleId") Long articleId, Model model,
                                      HttpServletRequest request) {
-        Article findArticle = articleRepository.findById(articleId);
+        Article findArticle = articleRepository.findOne(articleId).get();
 
         if (loginUser.getUserId() != findArticle.getUser().getUserId()) {
             redirectUrl(request);
@@ -105,9 +107,8 @@ public class ArticleController {
                                 BindingResult bindingResult,
                                 HttpServletRequest request) throws IOException {
 
+        Article findArticle = articleRepository.findOne(articleId).get();
 
-
-        Article findArticle = articleRepository.findById(articleId);
         if (loginUser.getUserId() != findArticle.getUser().getUserId()) {
             redirectUrl(request);
         }
@@ -118,17 +119,10 @@ public class ArticleController {
             return "template/articles/update";
         }
 
-        log.info("Image={}",articleForm.getArticleImage().getOriginalFilename());
 
-        if (articleForm.getArticleImage().getOriginalFilename().isEmpty()) {
-            findArticle.update(articleForm.getTitle(), articleForm.getContent(), findArticle.getArticleImage());
-        } else {
-            ImageFile articleImage =  fileStore.storeFile(articleForm.getArticleImage());
-            findArticle.update(articleForm.getTitle(), articleForm.getContent(), articleImage);
-        }
+        log.info("updateArticle 실행");
 
-        articleService.updateArticle(findArticle);
-
+        articleService.updateArticle(findArticle, articleForm);
 
         return "redirect:/articles/detail/" + String.valueOf(articleId);
     }
@@ -138,7 +132,7 @@ public class ArticleController {
     @GetMapping("/delete/{articleId}")
     private String deleteArticleForm(@Login User loginUser, @PathVariable("articleId") Long articleId, Model model,
                                      HttpServletRequest request) {
-        Article findArticle = articleRepository.findById(articleId);
+        Article findArticle = articleRepository.findOne(articleId).get();
 
         if (loginUser.getUserId() != findArticle.getUser().getUserId()) {
             redirectUrl(request);
@@ -151,12 +145,14 @@ public class ArticleController {
     @PostMapping("/delete/{articleId}")
     private String deleteArticle(@Login User loginUser, @PathVariable("articleId") Long articleId, Model model,
                                      HttpServletRequest request) {
-        Article findArticle = articleRepository.findById(articleId);
+
+
+        Article findArticle = articleRepository.findOne(articleId).get();
 
         if (loginUser.getUserId() != findArticle.getUser().getUserId()) {
             redirectUrl(request);
         }
-
+        log.info("deleteArticle 실행");
         articleService.deleteArticle(findArticle);
 
 

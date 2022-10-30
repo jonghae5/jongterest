@@ -19,6 +19,9 @@ repositories {
 }
 
 dependencies {
+	implementation 'junit:junit:4.13.1'
+	implementation 'junit:junit:4.13.1'
+
 	// devtools
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 
@@ -26,8 +29,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	// validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	//공통 템플릿
-	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate5'
+
+	// Query Parameter
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6'
+
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'

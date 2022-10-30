@@ -13,6 +13,29 @@
             <div class="mb-4">
                 <h4>Article Create</h4>
             </div>
+
+            <th:block th:if="${param.p}">
+                <select th:field="*{projectId}" name="selectPhone" class="form-select" th:errorclass="jongterest_field-error">
+                    <option th:each="projectOption : ${projects}" th:value="${projectOption.projectId}"
+                            th:text=${projectOption.title}
+                            th:if="${#strings.toString(projectOption.projectId)} == ${#strings.toString(param.p)}">
+                        TITLE
+                    </option>
+                </select>
+                <div class="jongterest_field-error" th:errors="*{projectId}">프로젝트 오류</div>
+            </th:block>
+            <th:block th:unless="${param.p}">
+                <select th:field="*{projectId}" name="selectPhone" class="form-select" th:errorclass="jongterest_field-error">
+                    <option th:value="0" th:text="|==프로젝트 선택==|"></option>
+                    <option th:each="projectOption : ${projects}" th:value="${projectOption.projectId}"
+                            th:text=${projectOption.title}>
+                        TITLE
+                    </option>
+                </select>
+                <div class="jongterest_field-error" th:errors="*{projectId}">프로젝트 오류</div>
+            </th:block>
+
+
             <div class="jongterest_space">
                 <label for="loginId">제목</label>
                 <input type="text" id="loginId" th:field="*{title}" class="form-control"
@@ -25,26 +48,6 @@
                 <input type="file" id="input-file" name="articleImage" style="display: none;"/>
             </div>
             <div class="jongterest_filebox">
-
-
-                <th:block th:if="${param.p}">
-                    <select th:field="*{projectId}" name="selectPhone" class="form-select">
-                        <option th:each="projectOption : ${projects}" th:value="${projectOption.projectId}"
-                                th:text=${projectOption.title}
-                                th:if="${#strings.toString(projectOption.projectId)} == ${#strings.toString(param.p)}">
-                            TITLE
-                        </option>
-                    </select>
-                </th:block>
-                <th:block th:unless="${param.p}">
-                    <select th:field="*{projectId}" name="selectPhone" class="form-select">
-                        <option th:value="0" th:if="${#strings.toString(param.p)}">==프로젝트 선택==</option>
-                        <option th:each="projectOption : ${projects}" th:value="${projectOption.projectId}"
-                                th:text=${projectOption.title}>
-                            TITLE
-                        </option>
-                    </select>
-                </th:block>
 
 
             </div>

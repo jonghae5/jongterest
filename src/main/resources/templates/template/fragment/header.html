@@ -20,7 +20,7 @@
         <a th:href="@{/login}" class="jongterest_header_nav" th:if="${session.loginUser ==null}">
             <span>login</span>
         </a>
-        <a th:href="@{/user/create}" class="jongterest_header_nav" th:if="${session.loginUser ==null}">
+        <a th:href="@{|/user/create?redirectURL=${#httpServletRequest.requestURI}|}" class="jongterest_header_nav" th:if="${session.loginUser ==null}">
             <span>SignUp</span>
         </a>
 <!--        {% else %}-->

@@ -3,10 +3,10 @@ package ojh.jongterest.web.controller.user;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ojh.jongterest.domain.project.Project;
-import ojh.jongterest.domain.project.ProjectRepository;
+import ojh.jongterest.domain.project.repository.ProjectRepository;
 import ojh.jongterest.domain.project.ProjectService;
 import ojh.jongterest.domain.user.User;
-import ojh.jongterest.domain.user.UserRepository;
+import ojh.jongterest.domain.user.repository.UserRepository;
 import ojh.jongterest.domain.user.UserService;
 import ojh.jongterest.web.argumentResolver.Login;
 import ojh.jongterest.web.session.SessionConst;
@@ -45,7 +45,8 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public String createUser(@Validated @ModelAttribute("user") UserCreateForm userCreateForm, BindingResult bindingResult) {
+    public String createUser(@Validated @ModelAttribute("user") UserCreateForm userCreateForm, BindingResult bindingResult,
+                             @RequestParam(defaultValue = "/") String requestURL) {
 
         userCreateFormValidator.validate(userCreateForm, bindingResult);
 
@@ -54,18 +55,20 @@ public class UserController {
             return "template/user/create";
         }
 
-        User saveUser = userService.signUp(userCreateForm);
+        userService.signUp(userCreateForm);
 
-        return "redirect:/";
+        return "redirect:" + requestURL;
     }
 
 
     @GetMapping("/detail/{userId}")
     public String DetailUserView(@PathVariable Long userId, Model model) {
-        User findUser = userRepository.findById(userId);
+        User findUser = userRepository.findOne(userId).get();
 
         List<Project> projects = projectRepository.findByUserId(userId);
+        List<Project> subscriptionProjects = projectRepository.findAllWithSubscriptionsContainingUser(findUser);
         model.addAttribute("projects", projects);
+        model.addAttribute("subscription_projects", subscriptionProjects);
         model.addAttribute("user", findUser);
         return "template/user/detail";
     }
@@ -94,11 +97,10 @@ public class UserController {
             return "template/user/update";
         }
 
-        User updateUser = userService.updateUser(loginUser.getUserId(), userUpdateForm);
+        userService.updateUser(loginUser.getUserId(), userUpdateForm);
 //        session.setAttribute(SessionConst.LOGIN_USER, updateUser);
 
         return "redirect:/user/detail/" + String.valueOf(loginUser.getUserId());
-//        return "template/user/detail";
 
     }
 
@@ -110,7 +112,7 @@ public class UserController {
     @PostMapping("/delete/{userId}")
     public String deleteUser(@Login User loginUser, @PathVariable Long userId,HttpSession session) {
 
-        userService.deleteUser(loginUser.getUserId());
+        userService.deleteUser(loginUser);
 
         //세션 삭제
         session.removeAttribute(SessionConst.LOGIN_USER);

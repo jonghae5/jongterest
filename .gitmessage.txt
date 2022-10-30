@@ -2,9 +2,9 @@
 # 제목은 대문자로 시작합니다.
 # 본문과 푸터는 선택 사항 입니다.
 #######제목#######
-
+Implement JPA, FIX Domain
 #######본문#######
-
+JPA Repository로 변경, Domain 내 Entity, Repsoitory, Service 수정
 #######푸터#######
 
 ##################

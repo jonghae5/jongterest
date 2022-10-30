@@ -62,7 +62,7 @@
         >
             Profile 생성
         </a>
-        <a th:href="@{/articles/create}" class="btn btn-dark rounded-pill mt-3 mb-3 px-3"
+        <a th:href="@{|/articles/create?redirectURL=${#httpServletRequest.requestURI}|}" class="btn btn-dark rounded-pill mt-3 mb-3 px-3"
            th:if="${session.loginUser !=null and session.loginUser.profile != null}">
             Create Article
         </a>
