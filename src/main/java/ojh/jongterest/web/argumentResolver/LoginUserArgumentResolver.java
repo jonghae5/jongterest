@@ -1,7 +1,7 @@
 package ojh.jongterest.web.argumentResolver;
 
 import lombok.extern.slf4j.Slf4j;
-import ojh.jongterest.domain.user.User;
+import ojh.jongterest.domain.entity.User;
 import ojh.jongterest.web.session.SessionConst;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;

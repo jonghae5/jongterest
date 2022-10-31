@@ -2,15 +2,15 @@ package ojh.jongterest.web.controller.subscription;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ojh.jongterest.domain.article.Article;
-import ojh.jongterest.domain.article.ArticleService;
-import ojh.jongterest.domain.subscription.SubscriptionService;
-import ojh.jongterest.domain.user.User;
+import ojh.jongterest.common.Pagination.Pagination;
+import ojh.jongterest.domain.entity.Article;
+import ojh.jongterest.domain.service.ArticleService;
+import ojh.jongterest.domain.service.SubscriptionService;
+import ojh.jongterest.domain.entity.User;
 import ojh.jongterest.web.argumentResolver.Login;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -27,8 +27,12 @@ public class SubscriptionController {
     private final ArticleService articleService;
 
     @GetMapping("/list")
-    public String subscriptionListView(@Login User loginUser, Model model) {
-        List<Article> articles = articleService.findArticlesWithUserProjectArticleContainingUser(loginUser);
+    public String subscriptionListView(@Login User loginUser, Model model,
+                                       @RequestParam(value = "page", defaultValue = "1", required = false) int page) {
+        Pagination pagination = new Pagination();
+        pagination.create(page);
+        List<Article> articles = articleService.findArticlesWithUserProjectArticleContainingUserOrderByUpdatedAt(loginUser, page);
+        model.addAttribute("pagination", pagination);
         model.addAttribute("articles",articles);
         return "template/subscription/list";
     }

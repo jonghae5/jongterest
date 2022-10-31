@@ -12,7 +12,7 @@
             </strong>
             </a>
             &nbsp&nbsp&nbsp
-            [[ ${comment?.createdDate} ]]
+            [[ ${comment?.updatedAt} ]]
         </div>
         <form th:class="|collapse multi-collapse-${comment.commentId}|" th:id="deleteForm"
               th:action="@{/comments/update/{articleId}/{commentId}(articleId=${article.articleId}, commentId=${comment.commentId})}"

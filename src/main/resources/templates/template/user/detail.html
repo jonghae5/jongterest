@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{template/scriptBase:: layout(~{::section},~{::link},~{::script})}">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{template/scriptBase:: layout(~{::section},~{::link},~{::script})}">
 <body>
 <link/>
 <section>
     <div>
         <div style="text-align: center; max-width: 500px;margin: 4rem auto;">
-            <p th:text="${user?.joinedDate}">
+            <p th:text="${user?.createdAt}">
             </p>
 
             <img th:src="@{/images/{filePath}(filePath=${user?.profile?.profileImage?.storeFilePath})}"
@@ -16,7 +17,7 @@
                    style="box-shadow: 0 0 4px #ccc; border-radius: 10rem; padding: .4rem;"
                    th:href="@{/user/profile/update/{id}(id = ${session.loginUser?.userId})}"
                    th:if="${session.loginUser.userId ==user.userId} and ${session.loginUser.profile!=null}">
-                        edit
+                    edit
                 </a>
             </h2>
 
@@ -49,16 +50,16 @@
             <!--        {% endif %}-->
         </div>
         <div>
-            <!--        {% include 'snippets/list_fragment.html' with article_list=object_list %}-->
-
+            <div th:replace="template/user/fragments/project_list.html :: project_list"></div>
+        </div>
+        <hr>
+        <div>
+            <div th:replace="template/user/fragments/subscription_project_list.html :: subscription_project_list"></div>
         </div>
     </div>
 
-    <div th:replace="template/user/fragments/project_list.html :: project_list"></div>
-    <hr>
-    <div th:replace="template/user/fragments/subscription_project_list.html :: subscription_project_list"></div>
-
 </section>
 </body>
-<script defer th:src="@{/js/magicgridForProject.js}"></script>
+<!--<script defer th:src="@{/js/magicgridForProject.js}"></script>-->
+<script defer th:src="@{/js/magicgridForSubscriptionProject.js}"></script>
 </html>

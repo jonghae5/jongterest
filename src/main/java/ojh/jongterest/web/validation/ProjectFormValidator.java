@@ -2,16 +2,11 @@ package ojh.jongterest.web.validation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ojh.jongterest.domain.user.User;
-import ojh.jongterest.domain.user.UserService;
-import ojh.jongterest.domain.user.profile.ProfileForm;
-import ojh.jongterest.web.controller.article.ArticleForm;
+import ojh.jongterest.domain.service.UserService;
 import ojh.jongterest.web.controller.project.ProjectForm;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-
-import java.util.List;
 
 @Slf4j
 @Component

@@ -3,7 +3,7 @@
 
 <body>
 <section th:fragment="project_list">
-    <div class="jongterest_project_container" th:if="${!#lists.isEmpty(projects)}">
+    <div class="jongterest_project_container" th:if="${!#lists.isEmpty(projects)}" style="display:flex;">
         <th:block th:each="project : ${projects}" th:if="${!#lists.isEmpty(projects)}">
 
             <a th:href="@{/projects/detail/{projectId}(projectId=${project.projectId})}">

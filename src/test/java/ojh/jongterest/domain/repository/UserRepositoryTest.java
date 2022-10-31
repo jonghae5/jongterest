@@ -1,9 +1,9 @@
 package ojh.jongterest.domain.repository;
 
-import ojh.jongterest.domain.user.repository.UserLocalRepository;
+import ojh.jongterest.domain.repository.user.UserLocalRepository;
 import ojh.jongterest.web.controller.user.Gender;
-import ojh.jongterest.domain.user.User;
-import ojh.jongterest.domain.user.repository.UserRepositoryOld;
+import ojh.jongterest.domain.entity.User;
+import ojh.jongterest.domain.repository.user.UserRepositoryOld;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 

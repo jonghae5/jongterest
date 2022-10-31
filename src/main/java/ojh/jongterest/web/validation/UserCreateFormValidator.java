@@ -2,8 +2,8 @@ package ojh.jongterest.web.validation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ojh.jongterest.domain.user.repository.UserRepository;
-import ojh.jongterest.domain.user.UserService;
+import ojh.jongterest.domain.repository.user.UserRepository;
+import ojh.jongterest.domain.service.UserService;
 import ojh.jongterest.web.controller.user.UserCreateForm;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

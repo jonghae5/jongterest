@@ -117,11 +117,32 @@ margin-bottom: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-
+  margin:0.4rem;
   border-radius: 1rem;
 }
 
 .jongterest_project_container img {
+  width: 7rem;
+  height: 7rem;
+  object-fit: cover;
+  border-radius: 1rem;
+
+}
+
+.jongterest_subscription_project_container {
+ padding: 0;
+ margin: 0, auto;
+}
+
+.jongterest_subscription_project_container div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 1rem;
+}
+
+.jongterest_subscription_project_container img {
   width: 7rem;
   height: 7rem;
   object-fit: cover;
@@ -150,6 +171,7 @@ margin-bottom: 10px;
   width: 100%;
   border-radius: 1rem;
 }
+
 
 @media screen and (max-width:500px) {
     html {

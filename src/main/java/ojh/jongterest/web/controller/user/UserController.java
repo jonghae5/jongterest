@@ -2,12 +2,12 @@ package ojh.jongterest.web.controller.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ojh.jongterest.domain.project.Project;
-import ojh.jongterest.domain.project.repository.ProjectRepository;
-import ojh.jongterest.domain.project.ProjectService;
-import ojh.jongterest.domain.user.User;
-import ojh.jongterest.domain.user.repository.UserRepository;
-import ojh.jongterest.domain.user.UserService;
+import ojh.jongterest.domain.entity.Project;
+import ojh.jongterest.domain.repository.project.ProjectRepository;
+import ojh.jongterest.domain.service.ProjectService;
+import ojh.jongterest.domain.entity.User;
+import ojh.jongterest.domain.repository.user.UserRepository;
+import ojh.jongterest.domain.service.UserService;
 import ojh.jongterest.web.argumentResolver.Login;
 import ojh.jongterest.web.session.SessionConst;
 import ojh.jongterest.web.validation.UserCreateFormValidator;

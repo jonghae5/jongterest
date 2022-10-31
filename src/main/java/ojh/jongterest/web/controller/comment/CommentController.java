@@ -2,10 +2,10 @@ package ojh.jongterest.web.controller.comment;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ojh.jongterest.domain.article.Article;
-import ojh.jongterest.domain.article.repository.ArticleRepository;
-import ojh.jongterest.domain.comment.CommentService;
-import ojh.jongterest.domain.user.User;
+import ojh.jongterest.domain.entity.Article;
+import ojh.jongterest.domain.repository.article.ArticleRepository;
+import ojh.jongterest.domain.service.CommentService;
+import ojh.jongterest.domain.entity.User;
 import ojh.jongterest.web.argumentResolver.Login;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

@@ -2,11 +2,11 @@ package ojh.jongterest.web.controller.user.profile;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ojh.jongterest.domain.imageFile.ImageFile;
-import ojh.jongterest.domain.user.User;
-import ojh.jongterest.domain.user.UserService;
-import ojh.jongterest.domain.user.profile.ProfileForm;
-import ojh.jongterest.domain.user.profile.UserProfile;
+import ojh.jongterest.common.imageFile.ImageFile;
+import ojh.jongterest.domain.entity.User;
+import ojh.jongterest.domain.service.UserService;
+import ojh.jongterest.common.profile.ProfileForm;
+import ojh.jongterest.common.profile.UserProfile;
 import ojh.jongterest.file.FileStore;
 import ojh.jongterest.web.argumentResolver.Login;
 import ojh.jongterest.web.validation.ProfileFormValidator;

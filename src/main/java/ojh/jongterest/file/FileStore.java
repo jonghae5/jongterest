@@ -1,7 +1,7 @@
 package ojh.jongterest.file;
 
 
-import ojh.jongterest.domain.imageFile.ImageFile;
+import ojh.jongterest.common.imageFile.ImageFile;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

@@ -2,8 +2,8 @@ package ojh.jongterest.web.controller.likeRecord;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ojh.jongterest.domain.likeRecord.repository.LikeRecordRepository;
-import ojh.jongterest.domain.likeRecord.LikeRecordService;
+import ojh.jongterest.domain.repository.likeRecord.LikeRecordRepository;
+import ojh.jongterest.domain.service.LikeRecordService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

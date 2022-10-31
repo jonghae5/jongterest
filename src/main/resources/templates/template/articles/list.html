@@ -1,27 +1,3 @@
-<!--{% if article_list %}-->
-<!--<div class="container">-->
-<!--    {% for article in article_list %}-->
-<!--    <a href="{% url 'articleapp:detail' pk=article.pk %}">-->
-<!--        {% include 'snippets/card.html' with article=article %}-->
-<!--    </a>-->
-<!--    {% endfor %}-->
-<!--</div>-->
-<!--<script src="{% static 'js/magicgrid.js' %}"></script>-->
-<!--{% else %}-->
-<!--<div class="text-center">-->
-<!--    <h1>No Articles YET!</h1>-->
-<!--</div>-->
-<!--{% endif %}-->
-
-<!--{% include 'snippets/pagination.html' with page_obj=page_obj %}-->
-
-<!--<div style="text-align : center;">-->
-<!--    <a href ="{% url 'articleapp:create' %}" class ="btn btn-dark rounded-pill mt-3 mb-3 px-3">-->
-<!--        Create Article-->
-<!--    </a>-->
-<!--</div>-->
-
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{template/scriptBase:: layout(~{::section},~{::style},~{::script})}">
@@ -53,6 +29,23 @@
 
     <div class="text-center" th:if="${#lists.isEmpty(articles)}">
         <h1>No Articles YET!</h1>
+    </div>
+
+    <div style="text-align: center; margin: 1rem 0;">
+
+        <a th:href="@{/articles/list?page={data}(data=${pagination.previousPage})}"
+           class="btn btn-secondary rounded-pill" th:if="${pagination.currentPage > 1}">
+            [[${pagination.previousPage}]]
+        </a>
+        <a th:href="@{/articles/list?page={data}(data=${pagination.currentPage})}"
+           class="btn btn-secondary rounded-pill active">
+            [[${pagination.currentPage}]]
+        </a>
+        <a th:href="@{/articles/list?page={data}(data=${pagination.nextPage})}"
+           class="btn btn-secondary rounded-pill">
+<!--           class="btn btn-secondary rounded-pill" th:if="${pagination.lastPage >= pagination.nextPage}">-->
+            [[${pagination.nextPage}]]
+        </a>
     </div>
 
     <div style="text-align : center;">

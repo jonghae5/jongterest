@@ -2,14 +2,14 @@ package ojh.jongterest.web.controller.article;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ojh.jongterest.domain.article.Article;
-import ojh.jongterest.domain.article.repository.ArticleRepository;
-import ojh.jongterest.domain.article.ArticleService;
-import ojh.jongterest.domain.imageFile.ImageFile;
-import ojh.jongterest.domain.project.Project;
-import ojh.jongterest.domain.project.repository.ProjectRepository;
-import ojh.jongterest.domain.user.User;
-import ojh.jongterest.domain.user.UserService;
+import ojh.jongterest.common.Pagination.Pagination;
+import ojh.jongterest.domain.entity.Article;
+import ojh.jongterest.domain.repository.article.ArticleRepository;
+import ojh.jongterest.domain.service.ArticleService;
+import ojh.jongterest.domain.entity.Project;
+import ojh.jongterest.domain.repository.project.ProjectRepository;
+import ojh.jongterest.domain.entity.User;
+import ojh.jongterest.domain.service.UserService;
 import ojh.jongterest.file.FileStore;
 import ojh.jongterest.web.argumentResolver.Login;
 import ojh.jongterest.web.controller.comment.CommentForm;
@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -39,9 +38,14 @@ public class ArticleController {
     private final ArticleCreateFormValidator articleCreateFormValidator;
     private final ArticleUpdateFormValidator articleUpdateFormValidator;
     @GetMapping("/list")
-    public String listView(Model model) {
+    public String listView(Model model,
+                           @RequestParam(value = "page", defaultValue = "1", required = false) int page) {
 
-        model.addAttribute("articles", articleService.getArticleList());
+        Pagination pagination = new Pagination();
+        pagination.create(page);
+        log.info("pagination={}", pagination);
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("articles", articleService.getArticleList(page));
         return "template/articles/list";
     }
 

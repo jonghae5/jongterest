@@ -2,7 +2,7 @@ package ojh.jongterest.web.validation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ojh.jongterest.domain.user.UserService;
+import ojh.jongterest.domain.service.UserService;
 import ojh.jongterest.web.controller.user.UserUpdateForm;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

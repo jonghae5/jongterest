@@ -2,7 +2,7 @@ package ojh.jongterest.web.controller.home;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ojh.jongterest.domain.user.User;
+import ojh.jongterest.domain.entity.User;
 import ojh.jongterest.web.argumentResolver.Login;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

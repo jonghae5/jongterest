@@ -25,6 +25,23 @@
         <h1>No Articles YET!</h1>
     </div>
 
+    <div style="text-align: center; margin: 1rem 0;">
+
+        <a th:href="@{/articles/list?page={data}(data=${pagination.previousPage})}"
+           class="btn btn-secondary rounded-pill" th:if="${pagination.currentPage > 1}">
+            [[${pagination.previousPage}]]
+        </a>
+        <a th:href="@{/articles/list?page={data}(data=${pagination.currentPage})}"
+           class="btn btn-secondary rounded-pill active">
+            [[${pagination.currentPage}]]
+        </a>
+        <a th:href="@{/articles/list?page={data}(data=${pagination.nextPage})}"
+           class="btn btn-secondary rounded-pill">
+            <!--           class="btn btn-secondary rounded-pill" th:if="${pagination.lastPage >= pagination.nextPage}">-->
+            [[${pagination.nextPage}]]
+        </a>
+    </div>
+
     <div style="text-align : center;">
         <a th:href="@{|/user/profile/create/${session.loginUser.userId}?redirectURL=${#httpServletRequest.requestURI}|}"
            class="btn btn-dark rounded-pill mt-3 mb-3 px-3"

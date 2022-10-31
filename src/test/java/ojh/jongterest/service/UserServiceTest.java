@@ -1,10 +1,10 @@
 package ojh.jongterest.service;
 
-import ojh.jongterest.domain.user.UserService;
+import ojh.jongterest.domain.service.UserService;
 import ojh.jongterest.web.controller.user.Gender;
-import ojh.jongterest.domain.user.repository.UserRepositoryOld;
+import ojh.jongterest.domain.repository.user.UserRepositoryOld;
 import ojh.jongterest.web.controller.login.LoginForm;
-import ojh.jongterest.domain.user.User;
+import ojh.jongterest.domain.entity.User;
 import ojh.jongterest.web.controller.user.UserCreateForm;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -3,7 +3,7 @@
 
 <body>
 <section th:fragment="subscription_project_list">
-    <div class="jongterest_project_container" th:if="${!#lists.isEmpty(subscription_projects)}">
+    <div class="jongterest_subscription_project_container" th:if="${!#lists.isEmpty(subscription_projects)}">
         <th:block th:each="subscription_project : ${subscription_projects}" th:if="${!#lists.isEmpty(subscription_projects)}">
 
             <a th:href="@{/projects/detail/{projectId}(projectId=${subscription_project.projectId})}">
