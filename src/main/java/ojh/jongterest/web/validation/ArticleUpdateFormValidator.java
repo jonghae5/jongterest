@@ -21,13 +21,13 @@ public class ArticleUpdateFormValidator implements Validator {
     public void validate(Object target, Errors errors) {
         ArticleForm articleForm = (ArticleForm) target;
 
-        if (articleForm.getTitle() == null || articleForm.getTitle().isEmpty()) {
-            errors.reject("titleFail", "제목을 입력해주세요.");
-        }
-
-        if (articleForm.getContent() == null || articleForm.getContent().isEmpty()) {
-            errors.reject("contentFail", "내용을 입력해주세요.");
-        }
+//        if (articleForm.getTitle() == null || articleForm.getTitle().isEmpty()) {
+//            errors.reject("titleFail", "제목을 입력해주세요.");
+//        }
+//
+//        if (articleForm.getContent() == null || articleForm.getContent().isEmpty()) {
+//            errors.reject("contentFail", "내용을 입력해주세요.");
+//        }
 
 //        if (articleForm.getProjectId() == 0) {
 //            errors.reject("projectFail", "프로젝트를 선택 해주세요.");

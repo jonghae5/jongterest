@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -45,7 +46,7 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public String createUser(@Validated @ModelAttribute("user") UserCreateForm userCreateForm, BindingResult bindingResult,
+    public String createUser(@Valid @ModelAttribute("user") UserCreateForm userCreateForm, BindingResult bindingResult,
                              @RequestParam(defaultValue = "/") String requestURL) {
 
         userCreateFormValidator.validate(userCreateForm, bindingResult);
@@ -87,7 +88,7 @@ public class UserController {
     }
 
     @PostMapping("/update/{userId}")
-    public String updateUser(@Login User loginUser, @Validated @ModelAttribute("user") UserUpdateForm userUpdateForm,
+    public String updateUser(@Login User loginUser, @Valid @ModelAttribute("user") UserUpdateForm userUpdateForm,
                              BindingResult bindingResult, HttpSession session) {
 
         userUpdateFormValidator.validate(userUpdateForm, bindingResult);

@@ -4,12 +4,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ojh.jongterest.common.imageFile.ImageFile;
 import ojh.jongterest.domain.entity.User;
+import ojh.jongterest.domain.repository.user.UserRepository;
 import ojh.jongterest.domain.service.UserService;
-import ojh.jongterest.common.profile.ProfileForm;
-import ojh.jongterest.common.profile.UserProfile;
 import ojh.jongterest.file.FileStore;
 import ojh.jongterest.web.argumentResolver.Login;
-import ojh.jongterest.web.validation.ProfileFormValidator;
+import ojh.jongterest.web.validation.ProfileCreateFormValidator;
+import ojh.jongterest.web.validation.ProfileUpdateFormValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -25,9 +27,11 @@ import java.io.IOException;
 @RequestMapping("/user/profile")
 public class ProfileController {
 
+    private final UserRepository userRepository;
     private final UserService userService;
     private final FileStore fileStore;
-    private final ProfileFormValidator profileFormValidator;
+    private final ProfileCreateFormValidator profileCreateFormValidator;
+    private final ProfileUpdateFormValidator profileUpdateFormValidator;
 
     @GetMapping("/create/{usedId}")
     public String createProfileForm(@ModelAttribute("profile") ProfileForm profileForm) {
@@ -35,16 +39,16 @@ public class ProfileController {
     }
 
     @PostMapping("/create/{usedId}")
-    public String createProfile(@RequestParam(defaultValue = "/", required = false) String redirectURL, @Login User loginUser, @ModelAttribute("profile") ProfileForm profileForm, BindingResult bindingResult, HttpSession session) throws IOException {
-        profileFormValidator.validate(profileForm, bindingResult);
+    public String createProfile(@RequestParam(defaultValue = "/", required = false) String redirectURL, @Login User loginUser,
+                                @Valid @ModelAttribute("profile") ProfileForm profileForm, BindingResult bindingResult, HttpSession session) throws IOException {
+        profileCreateFormValidator.validate(profileForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
             log.error("errors={}", bindingResult);
-            return "template/articles/create";
+            return "template/user/profile/create";
         }
-
-        ImageFile profileImage = fileStore.storeFile(profileForm.getProfileImage());
-        User createUser = userService.createUserProfile(loginUser, profileForm.getNickname(), profileForm.getMessage(), profileImage);
+        log.info("전 create profile loginUser={}",loginUser.getProfile());
+        userService.createUserProfile(loginUser, profileForm);
 //        session.setAttribute(SessionConst.LOGIN_USER, createUser);
 
         if (!redirectURL.equals("/")) {
@@ -59,25 +63,32 @@ public class ProfileController {
         if (loginUser.getUserId() != userId) {
             redirectUrl(request);
         }
-        UserProfile loginUserProfile = loginUser.getProfile();
-        ProfileForm profileForm = new ProfileForm(loginUserProfile.getNickname(), loginUserProfile.getMessage());
-        model.addAttribute("profile", profileForm);
+        Optional<User> findUser = userRepository.findOne(loginUser.getUserId());
+        if (findUser.isPresent()) {
+            model.addAttribute("profile", findUser.get().getProfile());
+        }
         return "/template/user/profile/update";
     }
 
     @PostMapping("/update/{userId}")
     public String updateProfile(@Login User loginUser, @PathVariable("userId") Long userId,
-                                @ModelAttribute("profile") ProfileForm profileForm, BindingResult bindingResult,HttpSession session) throws IOException {
-        profileFormValidator.validate(profileForm, bindingResult);
+                                @Valid @ModelAttribute("profile") ProfileForm profileForm, BindingResult bindingResult,HttpSession session,
+                                HttpServletRequest request) throws IOException {
+
+
+        if (loginUser.getUserId() != userId) {
+            redirectUrl(request);
+        }
+
+        profileUpdateFormValidator.validate(profileForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
             log.error("errors={}", bindingResult);
-            return "template/articles/create";
+            return "template/user/profile/update";
         }
+        log.info("updateProfile 실행");
+        userService.updateUserProfile(loginUser, profileForm);
 
-        ImageFile profileImage =  fileStore.storeFile(profileForm.getProfileImage());
-        User updateUser = userService.createUserProfile(loginUser, profileForm.getNickname(), profileForm.getMessage(), profileImage);
-//        session.setAttribute(SessionConst.LOGIN_USER, updateUser);
         return "redirect:/user/detail/" + String.valueOf(loginUser.getUserId());
     }
 

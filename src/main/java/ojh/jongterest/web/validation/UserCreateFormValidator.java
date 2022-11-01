@@ -39,9 +39,10 @@ public class UserCreateFormValidator implements Validator {
         if (!userCreateForm.getPassword().equals(userCreateForm.getCheckPassword())) {
             errors.reject("passwordFail", "비밀번호가 일치하지 않습니다.");
         }
-        if (userCreateForm.getGenderType() == null) {
-            errors.rejectValue("genderType", "required.genderType");
-        }
+
+//        if (userCreateForm.getGenderType() == null) {
+//            errors.rejectValue("genderType", "required.genderType");
+//        }
 
     }
 }

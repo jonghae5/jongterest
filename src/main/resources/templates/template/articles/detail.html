@@ -24,7 +24,12 @@
 
             <a th:href="@{/user/detail/{userId}(userId=${article?.user.userId})}">
             <h5 th:text="${article?.user.profile.nickname}">
-                {{ target_article.user.profile.nickname }}
+                default nickname
+            </h5>
+            </a>
+            <a th:href="@{/projects/detail/{projectId}(projectId=${article?.project.projectId})}">
+            <h5 th:text="${article?.project.title}">
+                default project
             </h5>
             </a>
             <hr>

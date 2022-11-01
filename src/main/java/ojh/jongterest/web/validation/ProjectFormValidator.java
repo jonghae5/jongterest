@@ -23,17 +23,17 @@ public class ProjectFormValidator implements Validator {
     public void validate(Object target, Errors errors) {
         ProjectForm projectForm = (ProjectForm) target;
 
-        if (projectForm.getTitle() == null || projectForm.getTitle().isEmpty()) {
-            errors.reject("titleFail", "제목을 입력해주세요.");
-        }
+//        if (projectForm.getTitle() == null || projectForm.getTitle().isEmpty()) {
+//            errors.reject("titleFail", "제목을 입력해주세요.");
+//        }
+//
+//        if (projectForm.getDescription() == null || projectForm.getDescription().isEmpty()) {
+//            errors.reject("contentFail", "설명을 입력해주세요.");
+//        }
 
-        if (projectForm.getDescription() == null || projectForm.getDescription().isEmpty()) {
-            errors.reject("contentFail", "설명을 입력해주세요.");
-        }
-
-        if (projectForm.getProjectImage().isEmpty()) {
-            errors.reject("imageFail", "이미지를 넣어주세요.");
-        }
+//        if (projectForm.getProjectImage().isEmpty()) {
+//            errors.reject("imageFail", "이미지를 넣어주세요.");
+//        }
 
 
 

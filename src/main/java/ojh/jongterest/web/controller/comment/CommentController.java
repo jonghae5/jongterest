@@ -8,9 +8,11 @@ import ojh.jongterest.domain.service.CommentService;
 import ojh.jongterest.domain.entity.User;
 import ojh.jongterest.web.argumentResolver.Login;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/comments")
@@ -22,7 +24,14 @@ public class CommentController {
     private final CommentService commentService;
     @PostMapping("/create/{articleId}")
     public String createComment(@Login User loginUser, @PathVariable("articleId") Long articleId,
-                              @ModelAttribute("commentForm") CommentForm commentForm) {
+                                @Valid @ModelAttribute("commentForm") CommentForm commentForm,
+                                BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            log.error("errors={}", bindingResult);
+            return "redirect:/articles/detail/" + String.valueOf(articleId);
+        }
+
         log.info("CREATE COMMENT 실행 <Controller>");
         commentService.saveComment(loginUser.getUserId(), articleId, commentForm.getContent());
 
@@ -39,9 +48,14 @@ public class CommentController {
 
     @PostMapping("/update/{articleId}/{commentId}")
     public String updateComment(@Login User loginUser,
-                                @PathVariable("articleId") Long articleId,@PathVariable("commentId") Long commentId,
-                              @ModelAttribute("form") CommentForm form,
+                                @PathVariable("articleId") Long articleId, @PathVariable("commentId") Long commentId,
+                                @Valid @ModelAttribute("form") CommentForm form, BindingResult bindingResult,
                                 HttpServletRequest request) {
+
+        if (bindingResult.hasErrors()) {
+            log.error("errors={}", bindingResult);
+            return "articles/detail/" + String.valueOf(articleId);
+        }
 
         Article article = articleRepository.findOne(articleId).get();
         if (loginUser.getUserId() != article.getUser().getUserId()) {

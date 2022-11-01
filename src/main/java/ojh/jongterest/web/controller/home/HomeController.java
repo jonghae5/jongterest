@@ -16,10 +16,11 @@ public class HomeController {
     @GetMapping("/")
     public String home(@Login User loginUser, Model model) {
 
-        if (loginUser != null) {
-            model.addAttribute("user", loginUser);
-        }
+//        if (loginUser != null) {
+//            model.addAttribute("user", loginUser);
+//        }
 
-        return "template/home";
+        return "redirect:/articles/list";
+//        return "template/home";
     }
 }

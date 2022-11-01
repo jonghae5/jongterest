@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 @Slf4j
 @Controller
@@ -29,7 +30,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@Validated @ModelAttribute("loginForm") LoginForm loginForm, BindingResult bindingResult,
+    public String login(@Valid @ModelAttribute("loginForm") LoginForm loginForm, BindingResult bindingResult,
                         @RequestParam(defaultValue = "/") String redirectURL,
                         HttpServletRequest request, HttpServletResponse response) {
 
@@ -52,7 +53,7 @@ public class LoginController {
         //세션에 로그인 회원 정보 보관
         session.setAttribute(SessionConst.LOGIN_USER, loginUser);
         //쿠키에 시간 정보를 주지 않으면 세션 쿠키(브라우저 종료시 삭제)
-
+        log.info("login User Profile={}", loginUser.getProfile());
         return "redirect:" + redirectURL;
     }
 
@@ -66,7 +67,8 @@ public class LoginController {
         return "redirect:/";
     }
 
-
+    //TODO
+    // Login Error CHECK
     private void loginErrorCheck(BindingResult bindingResult, User loginUser) {
         if (loginUser == null) {
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");

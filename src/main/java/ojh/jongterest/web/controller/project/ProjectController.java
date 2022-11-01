@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class ProjectController {
     }
 
     @PostMapping("/create")
-    public String createProject(@Login User loginUser, @ModelAttribute("projectForm") ProjectForm projectForm, BindingResult bindingResult,
+    public String createProject(@Login User loginUser, @Valid @ModelAttribute("projectForm") ProjectForm projectForm, BindingResult bindingResult,
                                 HttpSession session, HttpServletRequest request,
                                 @RequestParam(defaultValue = "/", required = false) String redirectURL) throws IOException {
         projectFormValidator.validate(projectForm, bindingResult);

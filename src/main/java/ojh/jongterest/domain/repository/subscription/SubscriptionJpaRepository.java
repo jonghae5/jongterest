@@ -41,7 +41,7 @@ public class SubscriptionJpaRepository implements SubscriptionRepository {
     public void deleteByUserIdAndProjectId(Long userId, Long projectId) {
         em.createQuery("DELETE FROM Subscription sc " +
                         "join fetch sc.user u " +
-                        "join fetch sc.project p" +
+                        "join fetch sc.project p " +
                         "WHERE u.userId =:userId and p.projectId =:projectId")
                 .setParameter("userId", userId)
                 .setParameter("projectId", projectId).executeUpdate();
@@ -52,7 +52,7 @@ public class SubscriptionJpaRepository implements SubscriptionRepository {
         List<Subscription> subscriptions =
                 em.createQuery("SELECT sc FROM Subscription sc " +
                                 "join fetch sc.user u " +
-                                "join fetch sc.project p" +
+                                "join fetch sc.project p " +
                                 "WHERE u.userId =:userId and p.projectId =:projectId")
                 .setParameter("userId", userId)
                 .setParameter("projectId", projectId).getResultList();
@@ -62,7 +62,7 @@ public class SubscriptionJpaRepository implements SubscriptionRepository {
     @Override
     public List<Subscription> findByProjectId(Long projectId) {
         return em.createQuery("select sc from Subscription sc " +
-                        "join fetch sc.project p" +
+                        "join fetch sc.project p " +
                         "where p.projectId =: id", Subscription.class)
                 .setParameter("id",projectId)
                 .getResultList();

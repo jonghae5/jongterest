@@ -21,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -38,8 +39,7 @@ public class ArticleController {
     private final ArticleCreateFormValidator articleCreateFormValidator;
     private final ArticleUpdateFormValidator articleUpdateFormValidator;
     @GetMapping("/list")
-    public String listView(Model model,
-                           @RequestParam(value = "page", defaultValue = "1", required = false) int page) {
+    public String listView(Model model, @RequestParam(value = "page", defaultValue = "1", required = false) int page) {
 
         Pagination pagination = new Pagination();
         pagination.create(page);
@@ -52,21 +52,21 @@ public class ArticleController {
 
     @GetMapping("/create")
     public String createArticleForm(@Login User loginUser, @ModelAttribute("article") ArticleForm articleForm, Model model) {
-        List<Project> projects = projectRepository.findAll();
+        List<Project> projects = projectRepository.findByUserId(loginUser.getUserId());
         model.addAttribute("projects", projects);
         return "template/articles/create";
     }
 
     @PostMapping("/create")
-    public String createArticle(@Login User loginUser, @ModelAttribute("article") ArticleForm articleForm, BindingResult bindingResult,
-                                Model model,HttpServletRequest request,
+    public String createArticle(@Login User loginUser, @Valid @ModelAttribute("article") ArticleForm articleForm, BindingResult bindingResult,
+                                Model model, HttpServletRequest request,
                                 @RequestParam(defaultValue = "/") String requestURL) throws IOException {
 
         articleCreateFormValidator.validate(articleForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
             log.error("errors={}", bindingResult);
-            List<Project> projects = projectRepository.findAll();
+            List<Project> projects = projectRepository.findByUserId(loginUser.getUserId());
             model.addAttribute("projects", projects);
             return "template/articles/create";
         }
@@ -107,7 +107,7 @@ public class ArticleController {
 
     @PostMapping("/update/{articleId}")
     public String updateArticle(@Login User loginUser, @PathVariable("articleId") Long articleId,
-                                @ModelAttribute("article") ArticleForm articleForm,
+                                @Valid @ModelAttribute("article") ArticleForm articleForm,
                                 BindingResult bindingResult,
                                 HttpServletRequest request) throws IOException {
 

@@ -6,17 +6,21 @@ import ojh.jongterest.web.controller.user.Gender;
 import ojh.jongterest.common.profile.UserProfile;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
 //    @Setter
     @Id @GeneratedValue
     private Long userId;
+
 
     private String loginId;
     private String password;
@@ -31,15 +35,9 @@ public class User extends BaseTimeEntity {
 
     // 프로필
     @Embedded
-    private UserProfile profile;
+    @Builder.Default
+    private UserProfile profile = new UserProfile();
 
-
-    @Builder
-    public User(String loginId, String password, Gender gender) {
-        this.loginId = loginId;
-        this.password = password;
-        this.gender = gender;
-    }
 
 
     public void update(String loginId, String password, Gender gender) {
@@ -48,7 +46,8 @@ public class User extends BaseTimeEntity {
         this.gender = gender;
     }
 
-    public void createProfile(UserProfile profile) {
-        this.profile = profile;
+
+    public void updateProfile(UserProfile userProfile) {
+        this.profile = userProfile;
     }
 }

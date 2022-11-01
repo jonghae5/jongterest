@@ -3,17 +3,22 @@ package ojh.jongterest.web.controller.user;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Data
 public class UserUpdateForm {
 
 //    @NotNull
     private Long userId;
-//    @NotBlank
-//    private String nickName;
-    @NotBlank
+
+
+    @Pattern(regexp="[a-zA-Z1-9]{6,12}", message = "{loginId.error}")
     private String loginId;
-    @NotBlank
+
+    @Pattern(regexp="(?=.*[0-9])(?=.*[a-z])(?=.*\\W)(?=\\S+$).{8,16}",
+            message = "{password.error}")
     private String password;
     @NotBlank
     private String checkPassword;
@@ -22,6 +27,7 @@ public class UserUpdateForm {
 
     // 성별
 //    @EnumNamePattern(regexp = "MALE|FEMALE")
+    @NotNull(message = "{gender.error}")
     private Gender genderType;
 
     public UserUpdateForm(Long userId, String loginId,  Gender genderType) {

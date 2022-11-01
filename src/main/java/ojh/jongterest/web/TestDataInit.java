@@ -44,14 +44,14 @@ public class TestDataInit {
         public void initData2() {
 
             User user = User.builder()
-                    .loginId("123")
-                    .password("123")
+                    .loginId("dhwhdgo2368")
+                    .password("@dhwhdgo2368")
                     .gender(Gender.MALE)
                     .build();
 
             User user2 = User.builder()
-                    .loginId("1234")
-                    .password("123")
+                    .loginId("dhwhdgo5645")
+                    .password("@dhwhdgo5645")
                     .gender(Gender.FEMALE)
                     .build();
 
@@ -72,8 +72,10 @@ public class TestDataInit {
                     .uploadFilePath("default4.jpg")
                     .build();
 
-            createProfile(user, "John", "테스트메세지", profileImage);
-            createProfile(user2, "John2", "테스트메세지2", profileImage2);
+
+            user.getProfile().update("John", "테스트메세지", profileImage);
+            user2.getProfile().update("John2", "테스트메세지2", profileImage2);
+//            createProfile(user2, "John2", "테스트메세지2", profileImage2);
             em.persist(user);
             em.persist(user2);
 
@@ -260,9 +262,7 @@ public class TestDataInit {
 
 
         public void createProfile(User user, String nickname, String message, ImageFile imageFile) {
-
-            UserProfile newProfile = new UserProfile(imageFile, nickname, message);
-            user.createProfile(newProfile);
+            user.getProfile().update(nickname, message, imageFile);
         }
     }
 

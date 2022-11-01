@@ -1,7 +1,6 @@
 package ojh.jongterest.common.profile;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ojh.jongterest.common.imageFile.ImageFile;
 
 import javax.persistence.Column;
@@ -10,6 +9,7 @@ import javax.persistence.Embedded;
 
 @Getter
 @Embeddable
+@AllArgsConstructor
 @NoArgsConstructor
 public class UserProfile {
     @Embedded
@@ -18,11 +18,10 @@ public class UserProfile {
     private String nickname;
     private String message;
 
-    public UserProfile(ImageFile profileImage, String nickname, String message) {
-        this.profileImage = profileImage;
+
+    public void update(String nickname, String message, ImageFile profileImage) {
         this.nickname = nickname;
         this.message = message;
+        this.profileImage = profileImage;
     }
-
-
 }

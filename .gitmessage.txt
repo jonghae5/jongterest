@@ -2,10 +2,11 @@
 # 제목은 대문자로 시작합니다.
 # 본문과 푸터는 선택 사항 입니다.
 #######제목#######
-Implement Builder to Domain, Simplify JPA Query, Move Domain Directory, Update Service, Repository
+Fix Validator, Fix Update Profile View, Update Article Detail View
 #######본문#######
-JPA Query join Fetch로 최적화, BaseTimeEntity, Pagination, Builder 구현
-Domain 폴더 수정, MVC 패턴 보완
+Validator error.messages로 이동 및 수정
+Profile Create, Update 파일 업로드 뷰 수정
+Article Detail View 프로젝트 링크 추가
 #######푸터#######
 
 ##################

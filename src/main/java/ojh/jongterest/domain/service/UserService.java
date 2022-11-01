@@ -16,12 +16,15 @@ import ojh.jongterest.domain.entity.Subscription;
 import ojh.jongterest.domain.repository.subscription.SubscriptionRepository;
 import ojh.jongterest.common.profile.UserProfile;
 import ojh.jongterest.domain.repository.user.UserRepository;
+import ojh.jongterest.file.FileStore;
 import ojh.jongterest.web.controller.user.Gender;
 import ojh.jongterest.web.controller.user.UserCreateForm;
 import ojh.jongterest.web.controller.user.UserUpdateForm;
+import ojh.jongterest.web.controller.user.profile.ProfileForm;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +41,7 @@ public class UserService {
     private final LikeRecordRepository likeRecordRepository;
     private final CommentRepository commentRepository;
     private final ProjectService projectService;
+    private final FileStore fileStore;
 
     @Transactional
     public void signUp(UserCreateForm userCreateForm) {
@@ -56,6 +60,7 @@ public class UserService {
     public List<User> findUsers() {
         return userRepository.findAll();
     }
+
     public User findUserByUserId(Long userId) {
         return userRepository.findOne(userId).get();
     }
@@ -78,13 +83,12 @@ public class UserService {
         String password = userUpdateForm.getPassword();
         Gender genderType = userUpdateForm.getGenderType();
 
-        updateUser.update(loginId,password,genderType);
+        updateUser.update(loginId, password, genderType);
 
         // Dirty Checking
 //        userRepository.update(updateUser);
         return updateUser;
     }
-
 
 
     @Transactional
@@ -93,7 +97,7 @@ public class UserService {
         User findUser = findUserByUserId(user.getUserId());
         List<Project> projects = projectRepository.findByUserId(findUser.getUserId());
         // 나 자신의 프로젝트
-        if (projects.size()>0) {
+        if (projects.size() > 0) {
             for (Project project : projects) {
                 log.info("project 실행");
                 List<Article> articles = articleRepository.findByProjectId(project.getProjectId());
@@ -160,14 +164,7 @@ public class UserService {
     }
 
 
-    @Transactional
-    public User createUserProfile(User user, String nickname, String message, ImageFile profileImage) {
 
-        user.createProfile(new UserProfile(profileImage, nickname, message));
-        // 해줘야함 영속성 컨텍스트에 올라가있지 않음.
-        userRepository.update(user);
-        return user;
-    }
 
     private User createFormToUserConverter(UserCreateForm userCreateForm) {
 
@@ -175,12 +172,44 @@ public class UserService {
         String password = userCreateForm.getPassword();
         Gender genderType = userCreateForm.getGenderType();
 
-        User user = User.builder()
+        return User.builder()
                 .loginId(loginId)
                 .password(password)
                 .gender(genderType)
                 .build();
-        return user;
+
     }
 
+    @Transactional
+    public void createUserProfile(User user, ProfileForm profileForm) throws IOException {
+        User findUser = findUserByUserId(user.getUserId());
+        // 주의
+        UserProfile findUserProfile = findUser.getProfile();
+        log.info("profile={}",findUserProfile);
+        ImageFile profileImage = fileStore.storeFile(profileForm.getProfileImage());
+        findUserProfile.update(profileForm.getNickname(),profileForm.getMessage(), profileImage);
+
+
+
+        // 해줘야함 영속성 컨텍스트에 올라가있지 않음.
+        log.info("user Profile={}",findUser.getProfile().getMessage());
+        userRepository.save(findUser);
+
+    }
+
+    @Transactional
+    public void updateUserProfile(User loginUser, ProfileForm profileForm) throws IOException {
+        User findUser = findUserByUserId(loginUser.getUserId());
+        UserProfile findUserProfile = findUser.getProfile();
+        if (profileForm.getProfileImage().getOriginalFilename().isEmpty()) {
+            findUserProfile.update(profileForm.getNickname(),profileForm.getMessage(), findUser.getProfile().getProfileImage());
+        } else {
+            ImageFile profileImage = fileStore.storeFile(profileForm.getProfileImage());
+            findUserProfile.update(profileForm.getNickname(),profileForm.getMessage(), profileImage);
+        }
+        log.info("user Profile={}",findUser.getProfile().getNickname());
+        log.info("user Profile={}",findUser.getProfile().getMessage());
+        userRepository.save(findUser);
+    }
 }
+
