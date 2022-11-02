@@ -42,7 +42,9 @@
             [[${pagination.currentPage}]]
         </a>
         <a th:href="@{/articles/list?page={data}(data=${pagination.nextPage})}"
-           class="btn btn-secondary rounded-pill">
+           class="btn btn-secondary rounded-pill"
+            th:if="${#lists.size(articles) == 10}"
+           >
 <!--           class="btn btn-secondary rounded-pill" th:if="${pagination.lastPage >= pagination.nextPage}">-->
             [[${pagination.nextPage}]]
         </a>

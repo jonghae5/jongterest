@@ -9,9 +9,15 @@
             <p th:text="${user?.createdAt}">
             </p>
 
-            <img th:src="@{/images/{filePath}(filePath=${user?.profile?.profileImage?.storeFilePath})}"
+            <img th:src="${user.profile?.profileImage}?
+            @{/images/{filePath}(filePath=${user?.profile?.profileImage?.storeFilePath})} :
+            @{/images/defaultImage.jpeg}"
                  alt
                  style="height: 12rem; width: 12rem; border-radius : 20rem; margin-bottom: 2rem; object-fit:cover;">
+
+<!--            <img th:src="@{/images/{filePath}(filePath=${user?.profile?.profileImage?.storeFilePath})}"-->
+<!--                 alt-->
+<!--                 style="height: 12rem; width: 12rem; border-radius : 20rem; margin-bottom: 2rem; object-fit:cover;">-->
             <h2 style="font-family: 'NanumSquareB';">
                 <a class="material-icons"
                    style="box-shadow: 0 0 4px #ccc; border-radius: 10rem; padding: .4rem;"

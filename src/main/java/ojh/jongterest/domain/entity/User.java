@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 public class User extends BaseTimeEntity {
 //    @Setter
     @Id @GeneratedValue
+//    @GeneratedValue(strategy = GenerationType.IDENTITY) //MYSQL 전용 id autoIcrement
     private Long userId;
 
 

@@ -37,5 +37,10 @@ out/
 .vscode/
 
 
-#파일
+### static file ###
 !**/src/main/resources/static/file
+!**/src/main/resources/static/images
+
+### DB 정보 ###
+application-db.properties
+

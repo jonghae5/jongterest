@@ -2,11 +2,10 @@
 # 제목은 대문자로 시작합니다.
 # 본문과 푸터는 선택 사항 입니다.
 #######제목#######
-Fix Validator, Fix Update Profile View, Update Article Detail View
+ADD Exception Page, Update Pagination, FIX DB to MYSQL
 #######본문#######
-Validator error.messages로 이동 및 수정
-Profile Create, Update 파일 업로드 뷰 수정
-Article Detail View 프로젝트 링크 추가
+Pagination 다음 페이지 보완
+Exception 페이지 추가
 #######푸터#######
 
 ##################
