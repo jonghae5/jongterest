@@ -9,9 +9,9 @@
             <p th:text="${user?.createdAt}">
             </p>
 
-            <img th:src="${user.profile?.profileImage}?
-            @{/images/{filePath}(filePath=${user?.profile?.profileImage?.storeFilePath})} :
-            @{/images/defaultImage.jpeg}"
+            <img th:src="${#strings.isEmpty(user.profile?.profileImage?.storeFilePath)}?
+            @{https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png}:
+            @{/images/{filePath}(filePath=${user?.profile?.profileImage?.storeFilePath})} "
                  alt
                  style="height: 12rem; width: 12rem; border-radius : 20rem; margin-bottom: 2rem; object-fit:cover;">
 
@@ -22,7 +22,7 @@
                 <a class="material-icons"
                    style="box-shadow: 0 0 4px #ccc; border-radius: 10rem; padding: .4rem;"
                    th:href="@{/user/profile/update/{id}(id = ${session.loginUser?.userId})}"
-                   th:if="${session.loginUser.userId ==user.userId} and ${session.loginUser.profile!=null}">
+                   th:if="${session.loginUser.userId ==user.userId} and ${user.profile.nickname!=null}">
                     edit
                 </a>
             </h2>
@@ -31,8 +31,8 @@
                 Default Message
             </h5>
 
-            <a th:href="@{|/user/profile/create/{id}?redirectURL=${#httpServletRequest.requestURI}(id = ${session.loginUser?.userId})|}"
-               th:if="${session.loginUser.userId ==user.userId} and ${session.loginUser.profile==null}">
+            <a th:href="@{|/user/profile/create/${session.loginUser?.userId}?redirectURL=${#httpServletRequest.requestURI}|}"
+               th:if="${session.loginUser.userId ==user.userId} and ${user.profile.nickname==null}">
                 <h2 style="font-family: 'NanumSquareB';">
                     Create Profile
                 </h2>

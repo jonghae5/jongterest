@@ -33,22 +33,18 @@ public class ProfileUpdateFormValidator implements Validator {
     public void validate(Object target, Errors errors) {
         ProfileForm profileForm = (ProfileForm) target;
 
-        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpSession session = attr.getRequest().getSession();
-
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = servletRequestAttributes.getRequest().getSession(true);
         User loginUser = (User) session.getAttribute(SessionConst.LOGIN_USER);
         Optional<User> findUser = userRepository.findByNickname(profileForm.getNickname());
-
         if (findUser.isPresent()) {
-            if (loginUser.getUserId()!= findUser.get().getUserId()) {
-            errors.rejectValue("nickname", "nickname.error", "중복된 닉네임입니다..");
+            if (!loginUser.getLoginId().equals(findUser.get().getLoginId())) {
+                log.info("===Profile Form Validator===");
+                log.info("loginUser id={}", loginUser.getLoginId());
+                log.info( "findUser id={}", findUser.get().getLoginId());
+                errors.rejectValue("nickname", "nickname.error", "이미 존재하는 닉네입니다.");
             }
         }
-
-//        if (profileForm.getProfileImage().isEmpty()) {
-//            errors.reject("imageFail", "이미지를 넣어주세요.");
-//        }
-
 
 
     }

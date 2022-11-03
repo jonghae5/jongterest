@@ -47,7 +47,7 @@ public class UserController {
 
     @PostMapping("/create")
     public String createUser(@Valid @ModelAttribute("user") UserCreateForm userCreateForm, BindingResult bindingResult,
-                             @RequestParam(defaultValue = "/") String requestURL) {
+                             @RequestParam(defaultValue = "/") String requestURL,HttpSession session) {
 
         userCreateFormValidator.validate(userCreateForm, bindingResult);
 
@@ -56,8 +56,8 @@ public class UserController {
             return "template/user/create";
         }
 
-        userService.signUp(userCreateForm);
-
+        User user = userService.signUp(userCreateForm);
+        session.setAttribute(SessionConst.LOGIN_USER, user);
         return "redirect:" + requestURL;
     }
 

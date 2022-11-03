@@ -6,12 +6,27 @@ import lombok.extern.slf4j.Slf4j;
 import ojh.jongterest.domain.entity.*;
 import ojh.jongterest.common.imageFile.ImageFile;
 import ojh.jongterest.common.profile.UserProfile;
+import ojh.jongterest.domain.repository.article.ArticleRepository;
+import ojh.jongterest.domain.repository.comment.CommentRepository;
+import ojh.jongterest.domain.repository.project.ProjectRepository;
+import ojh.jongterest.domain.repository.user.UserRepository;
+import ojh.jongterest.domain.service.ArticleService;
+import ojh.jongterest.domain.service.CommentService;
+import ojh.jongterest.domain.service.ProjectService;
+import ojh.jongterest.domain.service.UserService;
 import ojh.jongterest.web.controller.user.Gender;
+import ojh.jongterest.web.controller.user.UserCreateForm;
+import ojh.jongterest.web.controller.user.profile.ProfileForm;
+import ojh.jongterest.web.session.SessionConst;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,8 +40,9 @@ public class TestDataInit {
 
     private final InitService initService;
 
+
     @PostConstruct
-    public void init() {
+    public void init() throws IOException {
 //        initService.initData();
         initService.initData2();
     }
@@ -39,26 +55,41 @@ public class TestDataInit {
     @Transactional
     static class InitService {
         private final EntityManager em;
+        private final UserService userService;
+        private final ArticleService articleService;
+        private final CommentService commentService;
+        private final ProjectService projectService;
 
 
-        public void initData2() {
+        private final UserRepository userRepository;
+        private final ArticleRepository articleRepository;
+        private final CommentRepository commentRepository;
+        private final ProjectRepository projectRepository;
 
-            User user = User.builder()
-                    .loginId("dhwhdgo2368")
-                    .password("@dhwhdgo2368")
-                    .gender(Gender.MALE)
-                    .build();
 
-            User user2 = User.builder()
-                    .loginId("dhwhdgo5645")
-                    .password("@dhwhdgo5645")
-                    .gender(Gender.FEMALE)
-                    .build();
+        public void initData2() throws IOException {
+
+
+            UserCreateForm userCreateForm1 = new UserCreateForm("wldwlddl1", "wldwlddl1!", Gender.FEMALE);
+
+            // 회원가입
+            User user = userService.signUp(userCreateForm1);
+
+//            ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+//            HttpSession session = servletRequestAttributes.getRequest().getSession(true);
+//            session.setAttribute(SessionConst.LOGIN_USER, user);
+
+            UserCreateForm userCreateForm2 = new UserCreateForm("dhwhdgo5645", "dhwhdgo5645!", Gender.MALE);
+
+            User user2 = userService.signUp(userCreateForm2);
+
+            // 프로필 생성
 
             ImageFile profileImage = ImageFile.builder()
                     .storeFilePath("default.jpeg")
                     .uploadFilePath("default.jpeg")
                     .build();
+
             ImageFile profileImage2 = ImageFile.builder()
                     .storeFilePath("default2.jpeg")
                     .uploadFilePath("default2.jpeg")
@@ -73,9 +104,8 @@ public class TestDataInit {
                     .build();
 
 
-            user.getProfile().update("John", "테스트메세지", profileImage);
-            user2.getProfile().update("John2", "테스트메세지2", profileImage2);
-//            createProfile(user2, "John2", "테스트메세지2", profileImage2);
+            user.getProfile().update("징징이", "테스트메세지 징징이", null);
+            user2.getProfile().update("뚱이", "테스트메세지 뚱이", profileImage2);
             em.persist(user);
             em.persist(user2);
 

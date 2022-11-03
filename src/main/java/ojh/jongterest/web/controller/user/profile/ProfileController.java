@@ -35,19 +35,21 @@ public class ProfileController {
 
     @GetMapping("/create/{usedId}")
     public String createProfileForm(@ModelAttribute("profile") ProfileForm profileForm) {
-        return "/template/user/profile/create";
+        return "template/user/profile/create";
     }
 
     @PostMapping("/create/{usedId}")
     public String createProfile(@RequestParam(defaultValue = "/", required = false) String redirectURL, @Login User loginUser,
-                                @Valid @ModelAttribute("profile") ProfileForm profileForm, BindingResult bindingResult, HttpSession session) throws IOException {
+                                @Valid @ModelAttribute("profile") ProfileForm profileForm, BindingResult bindingResult,
+                                HttpSession session) throws IOException {
+
         profileCreateFormValidator.validate(profileForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
             log.error("errors={}", bindingResult);
             return "template/user/profile/create";
         }
-        log.info("전 create profile loginUser={}",loginUser.getProfile());
+        log.debug("전 create profile loginUser={}",loginUser.getProfile());
         userService.createUserProfile(loginUser, profileForm);
 //        session.setAttribute(SessionConst.LOGIN_USER, createUser);
 
@@ -67,7 +69,7 @@ public class ProfileController {
         if (findUser.isPresent()) {
             model.addAttribute("profile", findUser.get().getProfile());
         }
-        return "/template/user/profile/update";
+        return "template/user/profile/update";
     }
 
     @PostMapping("/update/{userId}")

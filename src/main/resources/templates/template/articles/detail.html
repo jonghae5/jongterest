@@ -51,10 +51,10 @@
             </a>
             <hr>
             <th:block th:each="comment : ${article.comments}">
-                <div th:replace="~{/template/comments/detail :: commentDetail(${article},${comment}) }"></div>
+                <div th:replace="~{template/comments/detail :: commentDetail(${article},${comment}) }"></div>
             </th:block>
 
-            <div th:replace="~{/template/comments/create :: commentCreate(${article}, ${commentForm}) }"></div>
+            <div th:replace="~{template/comments/create :: commentCreate(${article}, ${commentForm}) }"></div>
         </div>
     </div>
 

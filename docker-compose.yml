@@ -1,0 +1,39 @@
+version: "3.7"
+services:
+  mysql-container:
+    image: mysql:8.0.30
+    networks:
+      - springboot-mysql-net
+    volumes:
+      - mysql-database:/opt/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: skfgnxh1
+      MYSQL_DATABASE: jongterest
+
+  spring-container:
+    image: dhwhdgo2368/jongterest-container
+    networks:
+      - springboot-mysql-net
+    ports:
+      - 8080:8080
+    volumes:
+      - images-volume:/home/images/
+
+  nginx-container:
+    image: nginx:latest
+    networks:
+      - springboot-mysql-net
+    volumes:
+      - /home/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - images-volume:/data/images/
+    ports:
+      - 80:80
+
+networks:
+  springboot-mysql-net:
+
+volumes:
+  images-volume:
+  mysql-database:
+
+

@@ -21,6 +21,7 @@ import ojh.jongterest.web.controller.user.Gender;
 import ojh.jongterest.web.controller.user.UserCreateForm;
 import ojh.jongterest.web.controller.user.UserUpdateForm;
 import ojh.jongterest.web.controller.user.profile.ProfileForm;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,19 +43,33 @@ public class UserService {
     private final CommentRepository commentRepository;
     private final ProjectService projectService;
     private final FileStore fileStore;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void signUp(UserCreateForm userCreateForm) {
+    public User signUp(UserCreateForm userCreateForm) {
         User newUser = createFormToUserConverter(userCreateForm);
+
+        //암호화
+        log.info("전 password={}", newUser.getPassword());
+        newUser.changePassword(passwordEncoder.encode(newUser.getPassword()));
+        log.info("후 password={}", newUser.getPassword());
         userRepository.save(newUser);
+        return newUser;
     }
 
     public User login(String loginId, String password) {
         Optional<User> findUser = userRepository.findByLoginId(loginId);
 
-        return userRepository.findByLoginId(loginId)
-                .filter(m -> m.getPassword().equals(password))
-                .orElse(null);
+        String encodePw = findUser.get().getPassword();
+
+        if(passwordEncoder.matches(password, encodePw)) {
+            return findUser.get();
+        } else {
+            return null;
+        }
+//        return userRepository.findByLoginId(loginId)
+//                .filter(m -> m.getPassword().equals(password))
+//                .orElse(null);
     }
 
     public List<User> findUsers() {
@@ -84,6 +99,9 @@ public class UserService {
         Gender genderType = userUpdateForm.getGenderType();
 
         updateUser.update(loginId, password, genderType);
+
+        //암호화
+        updateUser.changePassword(passwordEncoder.encode(updateUser.getPassword()));
 
         // Dirty Checking
 //        userRepository.update(updateUser);

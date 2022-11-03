@@ -22,8 +22,13 @@ public class FileStore {
 
     public ImageFile storeFile(MultipartFile multipartFile) throws IOException
     {
+        // 없으면 기본 이미지 생성
         if (multipartFile.isEmpty()) {
             return null;
+//            String originalDefaultFilename = "";
+//            String fullPathDefaultFilename = getFullPath(originalDefaultFilename);
+//            multipartFile.transferTo(new File(fullPathDefaultFilename));
+//            return new ImageFile(originalDefaultFilename, originalDefaultFilename);
         }
         String originalFilename = multipartFile.getOriginalFilename();
         String storeFileName = createStoreFileName(originalFilename);

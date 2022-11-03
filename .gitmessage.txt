@@ -2,10 +2,11 @@
 # 제목은 대문자로 시작합니다.
 # 본문과 푸터는 선택 사항 입니다.
 #######제목#######
-ADD Exception Page, Update Pagination, FIX DB to MYSQL
+Docker, Server Vultr, Password Encrypt, FIX PROFILE CREATE FORM
 #######본문#######
 Pagination 다음 페이지 보완
 Exception 페이지 추가
+DOCKERFILE, docker-compose.yml 추가
 #######푸터#######
 
 ##################

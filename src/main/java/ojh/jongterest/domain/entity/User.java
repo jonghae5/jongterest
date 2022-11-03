@@ -51,4 +51,8 @@ public class User extends BaseTimeEntity {
     public void updateProfile(UserProfile userProfile) {
         this.profile = userProfile;
     }
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
 }
