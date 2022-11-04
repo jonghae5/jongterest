@@ -37,15 +37,31 @@ skfgnxh1
 create database jongterest;
 drop database jongterest;
 
-### MYSQL 권한주기
+### MYSQL 권한주기 (외부로부터 접근 가능)
 create user 'jonghae5'@'%' identified by 'skfgnxh1';
-grant all privileges on jongterest.* to 'jonghae5'@'%';
+GRANT ALL PRIVILEGES ON jongterest.* to 'jonghae5'@'%';
+GRANT ALL PRIVILEGES ON *.* TO 'jonghae5'@'%';
 flush privileges;
 
-## 주의 MYSQL
+### Vultr에서 방화벽 여부 체크 (안열릴시에)
+sudo ufw status verbose
+sudo ufw allow 3306
+
+### MYSQL CONF 확인법
+https://stackoverflow.com/questions/47862722/mysql-conf-file-in-mysql-docker
+$ mysql --help | grep my.cnf > my.cnf 확인
+bind-address 0.0.0.0 추가
+
+### 주의 MYSQL
 datasource의 url 부분에서 호스트 부분 설정을 잘 해주어야함.
 현재 호스트가 mysql-container로 되어 있는데 이 호스트명은 앞으로 도커환경에서 mysql이 구동되는 컨테이너의 이름
 
+### MYSQL 죽을 때 Validation Query 필요
+mysql> show variables like '%timeout%';
+>> interactive_timeout 8시간
+> 
+spring.datasource.testOnBorrow=true
+spring.datasource.validationQuery=SELECT 1
 
 ## Docker 사용법 (Pull, Push)
 docker login
@@ -75,9 +91,6 @@ WORKDIR /home/jongterest/
 ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} app.jar
 ENTRYPOINT ["java","-jar","-Dspring.profiles.active=prod","/app.jar"]
-
-
-// ENTRYPOINT ["java","-jar","-Dspring.profiles.active=prod","/app.jar"]
 // => 설정파일을 분리해서 사용할 때
 // java -jar -Dspring.profiles.active=prod app.jar
 
@@ -90,4 +103,6 @@ Container가 죽었을 때..
 서버(Node)를 클러스터링
 
 docker swarm init (manager node)
+
+###TODO
 > portainer에 swarm secret service 생성

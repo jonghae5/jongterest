@@ -50,9 +50,7 @@ public class UserService {
         User newUser = createFormToUserConverter(userCreateForm);
 
         //암호화
-        log.info("전 password={}", newUser.getPassword());
         newUser.changePassword(passwordEncoder.encode(newUser.getPassword()));
-        log.info("후 password={}", newUser.getPassword());
         userRepository.save(newUser);
         return newUser;
     }
@@ -117,11 +115,11 @@ public class UserService {
         // 나 자신의 프로젝트
         if (projects.size() > 0) {
             for (Project project : projects) {
-                log.info("project 실행");
+                log.info("Test project 실행");
                 List<Article> articles = articleRepository.findByProjectId(project.getProjectId());
                 if (articles.size() > 0) {
                     for (Article article : articles) {
-                        log.info("article 실행");
+                        log.info("Test article 실행");
 
                         List<Comment> comments = article.getComments();
                         if (comments.size() > 0) {
@@ -203,14 +201,12 @@ public class UserService {
         User findUser = findUserByUserId(user.getUserId());
         // 주의
         UserProfile findUserProfile = findUser.getProfile();
-        log.info("profile={}",findUserProfile);
         ImageFile profileImage = fileStore.storeFile(profileForm.getProfileImage());
         findUserProfile.update(profileForm.getNickname(),profileForm.getMessage(), profileImage);
 
 
 
         // 해줘야함 영속성 컨텍스트에 올라가있지 않음.
-        log.info("user Profile={}",findUser.getProfile().getMessage());
         userRepository.save(findUser);
 
     }
@@ -225,8 +221,6 @@ public class UserService {
             ImageFile profileImage = fileStore.storeFile(profileForm.getProfileImage());
             findUserProfile.update(profileForm.getNickname(),profileForm.getMessage(), profileImage);
         }
-        log.info("user Profile={}",findUser.getProfile().getNickname());
-        log.info("user Profile={}",findUser.getProfile().getMessage());
         userRepository.save(findUser);
     }
 }

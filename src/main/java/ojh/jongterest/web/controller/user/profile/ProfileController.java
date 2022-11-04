@@ -88,7 +88,6 @@ public class ProfileController {
             log.error("errors={}", bindingResult);
             return "template/user/profile/update";
         }
-        log.info("updateProfile 실행");
         userService.updateUserProfile(loginUser, profileForm);
 
         return "redirect:/user/detail/" + String.valueOf(loginUser.getUserId());

@@ -32,7 +32,6 @@ public class CommentController {
             return "redirect:/articles/detail/" + String.valueOf(articleId);
         }
 
-        log.info("CREATE COMMENT 실행 <Controller>");
         commentService.saveComment(loginUser.getUserId(), articleId, commentForm.getContent());
 
         return "redirect:/articles/detail/" + String.valueOf(articleId);

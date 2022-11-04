@@ -29,7 +29,6 @@ public class UserLocalRepository implements UserRepositoryOld {
     }
 
     public User update(User user) {
-        log.info("userId={}",user.getUserId());
         userRepository.put(user.getUserId(), user);
         return user;
     }

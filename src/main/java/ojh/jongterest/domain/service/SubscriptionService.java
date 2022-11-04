@@ -44,13 +44,11 @@ public class SubscriptionService {
                 .project(project)
                 .user(user)
                 .build();
-        log.info("Service 실행");
         project.addSubscription(subscription);
         subscriptionRepository.save(subscription);
     }
     @Transactional
     public void deleteSubscription(Long userId, Long projectId) {
-        log.info("delete 실행");
         Optional<Subscription> subscription = subscriptionRepository.findByUserIdAndProjectId(userId, projectId);
         if (subscription.isPresent()) {
             subscription.get().getProject().getSubscriptions().remove(subscription);

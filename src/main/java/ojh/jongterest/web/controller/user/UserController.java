@@ -52,7 +52,7 @@ public class UserController {
         userCreateFormValidator.validate(userCreateForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            log.info("errors={}", bindingResult);
+            log.error("errors={}", bindingResult);
             return "template/user/create";
         }
 
@@ -94,7 +94,7 @@ public class UserController {
         userUpdateFormValidator.validate(userUpdateForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            log.info("errors={}", bindingResult);
+            log.error("errors={}", bindingResult);
             return "template/user/update";
         }
 

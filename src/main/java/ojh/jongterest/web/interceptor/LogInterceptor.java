@@ -24,8 +24,17 @@ public class LogInterceptor implements HandlerInterceptor {
         if (handler instanceof HandlerMethod) {
             HandlerMethod hm = (HandlerMethod) handler;
         }
-        log.info("REQUEST  [{}][{}][{}]", uuid, requestURI, handler);
+        log.info("REQUEST  [{}][{}][{}][{}]",getRemoteAddr(request) ,uuid, requestURI, handler);
         return true; //false 진행X
+    }
+
+    private String getRemoteAddr(HttpServletRequest request) {
+        String ipFromHeader = request.getHeader("X-FORWARDED-FOR");
+        if (ipFromHeader != null && ipFromHeader.length() > 0) {
+            log.debug("ip from proxy - X-FORWARDED-FOR : " + ipFromHeader);
+            return ipFromHeader;
+        }
+        return request.getRemoteAddr();
     }
 
     @Override
@@ -37,7 +46,7 @@ public class LogInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         String requestURI = request.getRequestURI();
         String logId = (String) request.getAttribute(LOG_ID);
-        log.info("RESPONSE [{}][{}][{}]", logId, requestURI, handler);
+        log.info("RESPONSE [{}][{}][{}][{}]",getRemoteAddr(request) ,logId, requestURI, handler);
         if (ex != null) {
             log.error("afterCompletion error!!", ex);
         }

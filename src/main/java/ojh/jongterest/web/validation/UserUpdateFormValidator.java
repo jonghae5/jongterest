@@ -26,7 +26,6 @@ public class UserUpdateFormValidator implements Validator {
         UserUpdateForm userCreateForm = (UserUpdateForm) target;
 
         if (!userService.findUserByUserId(userCreateForm.getUserId()).getLoginId().equals(userCreateForm.getLoginId())) {
-            log.info("{},{}",userService.findUserByUserId(userCreateForm.getUserId()).getLoginId() ,userCreateForm.getLoginId());
             errors.reject("idFail", "아이디는 변경할 수 없습니다.");
         }
 

@@ -30,13 +30,10 @@ public class CommentLocalRepository implements CommentRepositoryOld {
     @Override
     public Comment save(Long userId, Long articleId, Comment comment) {
         comment.setCommentId(sequence.addAndGet(1));
-        log.info("commentId={}",sequence.get());
         commentRepository.put(sequence.get(), comment);
 
         commentUserRepository.put(sequence.get(), userId);
         articleCommentRepository.add(articleId, comment.getCommentId());
-        log.info("articleId={}",articleId);
-        log.info("comment.getCommentId()={}",comment.getCommentId());
         return comment;
     }
 
@@ -64,11 +61,7 @@ public class CommentLocalRepository implements CommentRepositoryOld {
     @Override
     public void delete(Long articleId, Long commentId) {
         Comment findComment = findOne(commentId);
-        log.info("findComment={}", findComment);
-        log.info("articleId={}", articleId);
-        log.info("commentId={}", commentId);
         List<Long> findCommentIds = articleCommentRepository.get(articleId);
-        log.info("findCommentIds={}", findCommentIds);
         List<Long> filteredCommentIds = findCommentIds.stream().filter(v -> v != commentId).collect(Collectors.toList());
 
         articleCommentRepository.replace(articleId, filteredCommentIds);

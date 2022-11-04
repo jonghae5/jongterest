@@ -18,6 +18,7 @@ import ojh.jongterest.web.controller.user.Gender;
 import ojh.jongterest.web.controller.user.UserCreateForm;
 import ojh.jongterest.web.controller.user.profile.ProfileForm;
 import ojh.jongterest.web.session.SessionConst;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -37,14 +38,16 @@ import java.util.Locale;
 @RequiredArgsConstructor
 @Slf4j
 public class TestDataInit {
-
+    @Value("${spring.profiles.active}")
+    private String key;
     private final InitService initService;
 
 
     @PostConstruct
     public void init() throws IOException {
-//        initService.initData();
-        initService.initData2();
+        if (key.equals("dev")) {
+            initService.initData2();
+        }
     }
 
     /**
@@ -54,6 +57,7 @@ public class TestDataInit {
     @Component
     @Transactional
     static class InitService {
+
         private final EntityManager em;
         private final UserService userService;
         private final ArticleService articleService;
@@ -239,7 +243,6 @@ public class TestDataInit {
 
             createProfile(user, "John", "테스트메세지", profileImage);
             createProfile(user2, "John2", "테스트메세지2", profileImage);
-            log.info("user={}", user);
             em.persist(user);
             em.persist(user2);
             log.info("TEST 초기 유저 데이터 완료");
@@ -269,7 +272,6 @@ public class TestDataInit {
                     .build();
             article.setUser(user);
             // 양방향
-            log.info("article={}", article);
             project.addArticle(article);
 
             em.persist(article);
@@ -284,7 +286,6 @@ public class TestDataInit {
             comment.setUser(user);
             // 양방향
             article.addComment(comment);
-            log.info("comment 넣기");
 //
             em.persist(comment);
 

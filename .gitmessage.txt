@@ -2,11 +2,11 @@
 # 제목은 대문자로 시작합니다.
 # 본문과 푸터는 선택 사항 입니다.
 #######제목#######
-Docker, Server Vultr, Password Encrypt, FIX PROFILE CREATE FORM
+Fix TestDataInit, Fix LogInceptor
 #######본문#######
-Pagination 다음 페이지 보완
-Exception 페이지 추가
-DOCKERFILE, docker-compose.yml 추가
+로그 인터셉터 수정
+Domain, Controller 필요없는 log 삭제
+Dev환경시 TestDataInit
 #######푸터#######
 
 ##################

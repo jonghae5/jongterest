@@ -41,7 +41,6 @@ public class SubscriptionController {
     public String subscribeProject(@PathVariable("projectId") Long projectId, @Login User loginUser,
                                    HttpServletRequest request){
 
-        log.info("subscription subscribeProject 실행");
         subscriptionService.saveSubscription(loginUser.getUserId(),projectId);
         return redirectUrl(request);
     }
@@ -49,7 +48,6 @@ public class SubscriptionController {
     @PostMapping("/unsubscribe/{projectId}")
     public String unsubscribeProject(@PathVariable("projectId") Long projectId, @Login User loginUser,
                                    HttpServletRequest request){
-        log.info("subscription unsubscribeProject  실행");
         subscriptionService.deleteSubscription(loginUser.getUserId(),projectId);
         return redirectUrl(request);
     }

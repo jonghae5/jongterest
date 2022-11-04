@@ -23,7 +23,6 @@ public class SubscriptionLocalRepository implements SubscriptionRepositoryOld {
 
     @Override
     public void save(Subscription subscription) {
-        log.info("Repository 실행");
         subscription.setSubscriptionId(sequence.addAndGet(1));
 
         Long userId = subscription.getUser().getUserId();
@@ -71,7 +70,6 @@ public class SubscriptionLocalRepository implements SubscriptionRepositoryOld {
     }
 
     public void delete(Long userId, Long projectId) {
-        log.info("DELETE 실행");
         List<Long> subscriptionIds = userSubscriptionRepository.get(userId);
 
         for (Long subscriptionId : subscriptionIds) {

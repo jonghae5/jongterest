@@ -81,7 +81,6 @@ public class ArticleService {
 
 //        Optional<Article> article = articleRepository.findOne(deleteArticle.getArticleId());
 
-        log.info("article 실행");
         List<Comment> comments = article.getComments();
         if (comments.size() > 0) {
 //

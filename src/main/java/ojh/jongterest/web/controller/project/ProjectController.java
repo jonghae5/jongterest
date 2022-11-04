@@ -48,7 +48,6 @@ public class ProjectController {
         model.addAttribute("project", findProject);
 
         Boolean isSubscription = subscriptionService.isSubscription(loginUser.getUserId(), projectId);
-        log.info("isSubscription={}",isSubscription);
         model.addAttribute("subscription",isSubscription);
         return "template/projects/detail";
     }

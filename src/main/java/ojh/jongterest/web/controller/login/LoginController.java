@@ -53,7 +53,6 @@ public class LoginController {
         //세션에 로그인 회원 정보 보관
         session.setAttribute(SessionConst.LOGIN_USER, loginUser);
         //쿠키에 시간 정보를 주지 않으면 세션 쿠키(브라우저 종료시 삭제)
-        log.info("login User Profile={}", loginUser.getProfile());
         return "redirect:" + redirectURL;
     }
 

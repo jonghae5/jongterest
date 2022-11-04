@@ -5,7 +5,9 @@ services:
     networks:
       - springboot-mysql-net
     volumes:
-      - mysql-database:/opt/lib/mysql
+      - mysql-database:/var/lib/mysql
+    ports:
+      - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: skfgnxh1
       MYSQL_DATABASE: jongterest

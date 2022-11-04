@@ -39,9 +39,6 @@ public class ProfileUpdateFormValidator implements Validator {
         Optional<User> findUser = userRepository.findByNickname(profileForm.getNickname());
         if (findUser.isPresent()) {
             if (!loginUser.getLoginId().equals(findUser.get().getLoginId())) {
-                log.info("===Profile Form Validator===");
-                log.info("loginUser id={}", loginUser.getLoginId());
-                log.info( "findUser id={}", findUser.get().getLoginId());
                 errors.rejectValue("nickname", "nickname.error", "이미 존재하는 닉네입니다.");
             }
         }

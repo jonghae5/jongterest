@@ -36,7 +36,6 @@ public class ProjectLocalRepository implements ProjectRepository{
         Long userId = project.getUser().getUserId();
         project.setProjectId(sequence.addAndGet(1));
         projectRepository.put(project.getProjectId(), project);
-        log.info("userId DEBUG={}", userId);
         userProjectRepository.add(userId,project.getProjectId());
 //        projectArticleRepository.add(project.getProjectId(), articleId);
     }

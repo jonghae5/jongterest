@@ -43,7 +43,6 @@ public class ArticleController {
 
         Pagination pagination = new Pagination();
         pagination.create(page);
-        log.info("pagination={}", pagination);
         model.addAttribute("pagination", pagination);
         model.addAttribute("articles", articleService.getArticleList(page));
         return "template/articles/list";
@@ -123,9 +122,6 @@ public class ArticleController {
             return "template/articles/update";
         }
 
-
-        log.info("updateArticle 실행");
-
         articleService.updateArticle(findArticle, articleForm);
 
         return "redirect:/articles/detail/" + String.valueOf(articleId);
@@ -156,7 +152,6 @@ public class ArticleController {
         if (loginUser.getUserId() != findArticle.getUser().getUserId()) {
             redirectUrl(request);
         }
-        log.info("deleteArticle 실행");
         articleService.deleteArticle(findArticle);
 
 

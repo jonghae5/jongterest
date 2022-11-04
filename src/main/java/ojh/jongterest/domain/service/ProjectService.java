@@ -71,11 +71,11 @@ public class ProjectService {
         // 나 자신이 아닌 다른 사람이 한 것들을 다 삭제한다.
         if (project.isPresent()) {
 
-            log.info("project 실행");
+            log.info("Test project 실행");
             List<Article> articles = articleRepository.findByProjectId(project.get().getProjectId());
             if (articles.size() > 0) {
                 for (Article article : articles) {
-                    log.info("article 실행");
+                    log.info("Test article 실행");
                     List<Comment> comments = article.getComments();
                     if (comments.size() > 0) {
 //                            article.deleteComments(comments);
