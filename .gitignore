@@ -52,3 +52,6 @@ jongterest_memo.md가
 ### docker-compose.yml ###
 docker-compose.yml
 
+### Log 설정 ###
+!**/src/main/resources/logback-dev.xml
+!**/src/main/resources/logback-prod.xml

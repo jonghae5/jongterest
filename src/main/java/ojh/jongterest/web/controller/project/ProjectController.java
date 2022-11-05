@@ -2,6 +2,7 @@ package ojh.jongterest.web.controller.project;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ojh.jongterest.common.Pagination.Pagination;
 import ojh.jongterest.domain.entity.Project;
 import ojh.jongterest.domain.repository.project.ProjectRepository;
 import ojh.jongterest.domain.service.ProjectService;
@@ -33,10 +34,12 @@ public class ProjectController {
     private final FileStore fileStore;
     private final ProjectFormValidator projectFormValidator;
     @GetMapping("/list")
-    public String ListView(@Login User loginUser, Model model) {
+    public String ListView(@Login User loginUser, Model model,@RequestParam(value = "page", defaultValue = "1", required = false) int page) {
 
-        List<Project> projects = projectService.getProjectList();
-        model.addAttribute("projects", projects);
+        Pagination pagination = new Pagination();
+        pagination.create(page);
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("projects", projectService.getProjectList(page));
         return "template/projects/list";
     }
 

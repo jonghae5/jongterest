@@ -20,6 +20,7 @@ services:
       - 8080:8080
     volumes:
       - images-volume:/home/images/
+      - spring-log-volume:/home/application_log/
 
   nginx-container:
     image: nginx:latest
@@ -37,5 +38,6 @@ networks:
 volumes:
   images-volume:
   mysql-database:
+  spring-log-volume:
 
 

@@ -39,14 +39,12 @@ public class ProjectService {
     private final SubscriptionRepository subscriptionRepository;
     private final FileStore fileStore;
 
-    public List<Project> getProjectList() {
-        List<Project> all = projectRepository.findAll();
+    public List<Project> getProjectList(int page) {
 
-        // 10개만 가져오기
-        if (all.size() > 10) {
-            return all.subList(0, 10);
-        }
-        return all;
+        int offset = (page -1) * 10;
+        int limit = 10;
+
+        return projectRepository.findAllOrderByUpdateAtDesc(offset,limit);
 
     }
 

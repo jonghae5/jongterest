@@ -58,6 +58,10 @@ public class UserService {
     public User login(String loginId, String password) {
         Optional<User> findUser = userRepository.findByLoginId(loginId);
 
+        if (findUser.isEmpty()) {
+            return null;
+        }
+
         String encodePw = findUser.get().getPassword();
 
         if(passwordEncoder.matches(password, encodePw)) {

@@ -76,4 +76,9 @@ public class ProjectLocalRepository implements ProjectRepository{
     public List<Project> findAllWithSubscriptionsContainingUser(User user) {
         return new ArrayList<>();
     }
+
+    @Override
+    public List<Project> findAllOrderByUpdateAtDesc(int offset, int limit) {
+        return null;
+    }
 }

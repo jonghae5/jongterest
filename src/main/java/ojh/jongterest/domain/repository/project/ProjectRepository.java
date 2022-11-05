@@ -14,4 +14,6 @@ public interface ProjectRepository {
 
     List<Project> findByUserId(Long userId);
     List<Project> findAllWithSubscriptionsContainingUser(User user);
+
+    List<Project> findAllOrderByUpdateAtDesc(int offset, int limit);
 }

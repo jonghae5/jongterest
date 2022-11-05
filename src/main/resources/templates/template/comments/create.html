@@ -9,9 +9,10 @@
         <h4>Comment Create</h4>
     </div>
     <form th:action="@{/comments/create/{articleId}(articleId=${article.articleId})}" th:object=${commentForm} method ="post">
-
+        <div>
         <label for="content">댓글</label>
-        <textarea id="content" th:field="${commentForm.content}" cols=60 rows=3 name="content"
+        </div>
+        <textarea style="width: 80%; resize: none;" id="content" th:field="${commentForm.content}" cols=60 rows=3 name="content"
                   th:errorclass="jongterest_field-error">
         </textarea>
         <div class="jongterest_field-error" th:errors="${commentForm.content}">댓글 오류</div>

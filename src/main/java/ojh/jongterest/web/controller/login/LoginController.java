@@ -6,6 +6,7 @@ import ojh.jongterest.web.session.SessionConst;
 import ojh.jongterest.domain.entity.User;
 import ojh.jongterest.domain.service.UserService;
 import ojh.jongterest.web.session.SessionManager;
+import ojh.jongterest.web.validation.LoginValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -23,7 +24,7 @@ public class LoginController {
 
     private final UserService userService;
     private final SessionManager sessionManager;
-
+    private final LoginValidator loginValidator;
     @GetMapping("/login")
     public String loginForm(@ModelAttribute("loginForm") LoginForm loginForm) {
         return "template/user/login";
@@ -34,18 +35,15 @@ public class LoginController {
                         @RequestParam(defaultValue = "/") String redirectURL,
                         HttpServletRequest request, HttpServletResponse response) {
 
-        if (bindingResult.hasErrors()) {
-            return "template/user/login";
-        }
-
         User loginUser = userService.login(loginForm.getLoginId(),loginForm.getPassword());
+
+
         //로그인 에러 체크
-        loginErrorCheck(bindingResult, loginUser);
+        loginValidator.validate(loginUser, bindingResult);
 
         if (bindingResult.hasErrors()) {
             return "template/user/login";
         }
-
 
         //로그인 성공 처리 TODO
         //세션이 있으면 기존 세션 반환, 없으면 생성
@@ -59,19 +57,11 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session!=null) {
+        if (session != null) {
             session.removeAttribute(SessionConst.LOGIN_USER);
             session.invalidate();
         }
         return "redirect:/";
     }
-
-    //TODO
-    // Login Error CHECK
-    private void loginErrorCheck(BindingResult bindingResult, User loginUser) {
-        if (loginUser == null) {
-            bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
-
-        }
-    }
 }
+

@@ -18,7 +18,7 @@
               th:action="@{/comments/update/{articleId}/{commentId}(articleId=${article.articleId}, commentId=${comment.commentId})}"
               method="post"
         >
-            <textarea id="comment_content" cols=60 rows=3 name="content">[[${comment?.content}]]</textarea>
+            <textarea style="width:100%; resize:none;" id="comment_content" cols=60 rows=3 name="content">[[${comment?.content}]]</textarea>
             <div style="text-align:right;">
                 <button class='btn btn-danger rounded-pill'th:text="|확인|"/>
                 <a type="button" class='btn btn-primary rounded-pill' th:data-toggle="collapse" th:data-target="|.multi-collapse-${comment.commentId}|"

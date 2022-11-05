@@ -32,6 +32,9 @@
     </div>
 
     <div style="text-align: center; margin: 1rem 0;">
+        <a th:href="@{/articles/list?page=1}"
+           class="btn btn-secondary rounded-pill" th:if="${pagination.currentPage > 1}" th:utext="|<|">
+        </a>
 
         <a th:href="@{/articles/list?page={data}(data=${pagination.previousPage})}"
            class="btn btn-secondary rounded-pill" th:if="${pagination.currentPage > 1}">

@@ -27,7 +27,27 @@
     <div class="text-center" th:if="${#lists.isEmpty(projects)}">
         <h1>No Projects YET!</h1>
     </div>
-    </th:block>
+
+    <div style="text-align: center; margin: 1rem 0;">
+
+        <a th:href="@{/projects/list?page=1}"
+           class="btn btn-secondary rounded-pill" th:if="${pagination.currentPage > 1}" th:utext="|<|">
+        </a>
+        <a th:href="@{/projects/list?page={data}(data=${pagination.previousPage})}"
+           class="btn btn-secondary rounded-pill" th:if="${pagination.currentPage > 1}">
+            [[${pagination.previousPage}]]
+        </a>
+        <a th:href="@{/projects/list?page={data}(data=${pagination.currentPage})}"
+           class="btn btn-secondary rounded-pill active">
+            [[${pagination.currentPage}]]
+        </a>
+        <a th:href="@{/projects/list?page={data}(data=${pagination.nextPage})}"
+           class="btn btn-secondary rounded-pill"
+           th:if="${#lists.size(projects) == 10}"
+        >
+            [[${pagination.nextPage}]]
+        </a>
+    </div>
 
     <!--{% include 'snippets/pagination.html' with page_obj=page_obj %}-->
 

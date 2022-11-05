@@ -106,3 +106,5 @@ docker swarm init (manager node)
 
 ###TODO
 > portainer에 swarm secret service 생성
+> 프로젝트 Pagination
+> 맨 앞으로 가기

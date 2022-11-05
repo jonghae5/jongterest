@@ -2,11 +2,10 @@
 # 제목은 대문자로 시작합니다.
 # 본문과 푸터는 선택 사항 입니다.
 #######제목#######
-Fix TestDataInit, Fix LogInceptor
+FIX commentCreateForm, Fix LoginController, Fix commentUpdateForm, Implement Pagination
 #######본문#######
-로그 인터셉터 수정
-Domain, Controller 필요없는 log 삭제
-Dev환경시 TestDataInit
+모바일 버전 Form 수정
+Project Pagination 추가
 #######푸터#######
 
 ##################

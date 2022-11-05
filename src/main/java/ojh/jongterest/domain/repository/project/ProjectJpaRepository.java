@@ -2,6 +2,7 @@ package ojh.jongterest.domain.repository.project;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import ojh.jongterest.domain.entity.Article;
 import ojh.jongterest.domain.entity.Project;
 import ojh.jongterest.domain.entity.User;
 import org.springframework.stereotype.Repository;
@@ -59,6 +60,15 @@ public class ProjectJpaRepository implements ProjectRepository{
                         "join fetch s.user u " +
                         "where u.userId =: id", Project.class)
                 .setParameter("id", user.getUserId())
+                .getResultList();
+    }
+
+    @Override
+    public List<Project> findAllOrderByUpdateAtDesc(int offset, int limit) {
+        return em.createQuery(
+                        "select p from Project p order by p.updatedAt desc", Project.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
                 .getResultList();
     }
 }
